@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "../utils/supabase/server";
-import DataPage from "./databaseConnect/data";
+import DataPage from "./shoppingList/data";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
