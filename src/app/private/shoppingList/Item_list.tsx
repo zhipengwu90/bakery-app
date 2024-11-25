@@ -61,14 +61,14 @@ const Item_list = (props: Props) => {
         </Button> */}
       </div>
 
-      <div className="flex flex-row  gap-4">
+      <div className="flex flex-row  gap-4 h-full">
         {detailWindow && (
           <>
             <div
               className="fixed inset-0 bg-black bg-opacity-50 z-10"
               onClick={() => setDetailWindow(false)}
             ></div>
-            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg">
+            <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg">
               <div className="flex flex-row items-center justify-end gap-4">
                 <IconButton
                   onClick={() => setDetailWindow(!detailWindow)}
