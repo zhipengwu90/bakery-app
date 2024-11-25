@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
         {title}
 
         <span
-          className={`absolute inline-block h-[2px] bg-dark left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 dark:bg-light
+          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 bg-light
         ${pathname === href ? "w-full" : "w-0"}`}
         >
           &nbsp;
@@ -72,7 +72,7 @@ const NavBar: React.FC = () => {
         {title}
 
         <span
-          className={`absolute inline-block h-[2px] bg-light left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 dark:bg-dark
+          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 bg-dark
         ${pathname === href ? "w-full" : "w-0"}`}
         >
           &nbsp;
