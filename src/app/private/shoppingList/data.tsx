@@ -17,11 +17,7 @@ const DataPage = (props: Props) => {
       const { data, error } = await supabase.from("item_list").select(
         `*,
          current_inventory (
-        date,
-        count_amount,
-        shopped_amount,
-        current_amount,
-        used_amount
+      *
         
         )
         `

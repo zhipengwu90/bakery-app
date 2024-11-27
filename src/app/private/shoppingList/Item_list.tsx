@@ -3,7 +3,10 @@ import Image from "next/image";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import { IconButton } from "@mui/material";
+
 import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 type Props = {
   itemList: any[] | null;
   // itemList: {
@@ -25,6 +28,8 @@ const Item_list = (props: Props) => {
   const [detailWindow, setDetailWindow] = useState(false);
 
   const [itemListCopy, setItemListCopy] = useState(itemList);
+
+  const [updatedItemList, setUpdatedItemList] = useState([]);
 
   // get all the unique item_category from the itemList
   const itemCategory = itemList?.map((item) => item.item_category);
@@ -158,10 +163,10 @@ const Item_list = (props: Props) => {
           </>
         )}
         <div className="w-full ">
-          <div className="grid  grid-cols-9 place-items-center text-xl font-bold mb-3">
+          <div className="grid  grid-cols-10 place-items-center text-xl font-bold mb-3 sticky top-20">
             <div className="place-self-start col-span-3 pl-1 ">Name</div>
             <div className="col-span-2">Min #</div>
-            <div className="col-span-2">Count #</div>
+            <div className="col-span-3">Count #</div>
             <div className="col-span-2">Need #</div>
           </div>
 
@@ -170,70 +175,145 @@ const Item_list = (props: Props) => {
               <div className="flex">
                 <div className="text-lg pl-3 text-[#ff5151]">{category}</div>
               </div>
-              {itemList
+              {itemListCopy
                 ?.filter((item) => item.item_category === category)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="grid grid-cols-9 py-1 place-items-center"
-                  >
+                .map((item) => {
+                  return (
                     <div
-                      className="col-span-3 place-self-start pl-4 hover:underline hover:cursor-pointer 
+                      key={item.id}
+                      className="grid grid-cols-10 py-2 place-items-center"
+                    >
+                      <div
+                        className="col-span-3 place-self-start pl-4 hover:underline hover:cursor-pointer 
                      hover:text-[#ff5151] 
                     "
-                      onClick={() => {
-                        setDetailWindow(!detailWindow);
-                        setItemDetail(item);
-                      }}
-                    >
-                      {item.name}
-                    </div>
-                    {!isEditing ? (
-                      <div className="col-span-2">{item.min_amount}</div>
-                    ) : (
-                      <div className="col-span-2">{item.min_amount}</div>
-                      // <Input
-                      //   type="number"
-                      //   defaultValue={item.min_amount}
-                      //   className="col-span-2 bg-gray-800 text-white w-14 px-1"
-                      //   inputProps={{
-                      //     style: { backgroundColor: "#2D2D2D", color: "white" },
-                      //   }}
-                      // />
-                    )}
-                    <div className="col-span-2">
+                        onClick={() => {
+                          setDetailWindow(!detailWindow);
+                          setItemDetail(item);
+                        }}
+                      >
+                        {item.name}
+                      </div>
                       {!isEditing ? (
-                        <div className="col-span-2">
-                          {item.current_inventory[0]?.current_amount}
-                        </div>
+                        <div className="col-span-2">{item.min_amount}</div>
                       ) : (
-                        <div className="col-span-2">
-                          {item.current_inventory[0]?.current_amount}
-                        </div>
+                        <div className="col-span-2">{item.min_amount}</div>
                         // <Input
                         //   type="number"
-                        //   defaultValue={
-                        //     item.current_inventory[0]?.current_amount
-                        //   }
-                        //   className="col-span-2 bg-gray-800 text-white  w-14"
+                        //   defaultValue={item.min_amount}
+                        //   className="col-span-2 bg-gray-800 text-white w-14 px-1"
                         //   inputProps={{
-                        //     style: {
-                        //       backgroundColor: "#2D2D2D",
-                        //       color: "white",
-                        //     },
+                        //     style: { backgroundColor: "#2D2D2D", color: "white" },
                         //   }}
                         // />
                       )}
+                      <div className="col-span-3">
+                        {!isEditing ? (
+                          <div >
+                            {item.current_inventory[0]?.total_number}
+                          </div>
+                        ) : (
+                          <div className="">
+                            <IconButton
+                              size="small"
+                              style={{
+                                padding: 0,
+                                paddingRight: 6,
+                                paddingLeft: 6,
+                              }}
+                              color="primary"
+                              onClick={() => {
+                                let currentItem = item;
+
+                                // Check if current_inventory exists and has at least one item
+                                if (currentItem.current_inventory == null || currentItem.current_inventory.length === 0) {
+                          
+
+                            
+                                  console.log("Inventory is null or empty");
+                                  return; // Exit if inventory is null or empty
+                                }
+                                // Check if total_number is less than or equal to 0
+                                if (currentItem.current_inventory[0].total_number <= 0) {
+                                  console.log("Total number is 0 or less, cannot decrement");
+                                  return; // Exit if total_number is 0 or less
+                                }
+
+                                // Decrement total_number
+                                currentItem.current_inventory[0].total_number -= 1;
+
+                                // Update the itemListCopy by mapping over the existing items
+                                setItemListCopy((prevItemList) =>
+                                  prevItemList ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i)) : []
+                                );
+                              }}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+
+                            {item.current_inventory[0]?.total_number == null ||
+                            undefined
+                              ? "\u00A0" 
+                              : item.current_inventory[0]?.total_number}
+                            <IconButton
+                              size="small"
+                              style={{
+                                padding: 0,
+                                paddingRight: 6,
+                                paddingLeft: 6,
+                              }}
+                              color="primary"
+                              onClick={() => {
+                                let currentItem = item;
+
+                                // Check if current_inventory exists and has at least one item
+                                if (currentItem.current_inventory == null || currentItem.current_inventory.length === 0) {
+                                  let newInventory = { total_number: 0 };
+                                  currentItem.current_inventory.push(newInventory);
+                                  setItemListCopy((prevItemList) =>
+                                    prevItemList ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i)) : []
+                                  );
+                                  return;
+                                }
+                           
+
+                                // Decrement total_number
+                                currentItem.current_inventory[0].total_number += 1;
+
+                                // Update the itemListCopy by mapping over the existing items
+                                setItemListCopy((prevItemList) =>
+                                  prevItemList ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i)) : []
+                                );
+                              }}
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          </div>
+                          // <Input
+                          //   type="number"
+                          //   defaultValue={
+                          //     item.current_inventory[0]?.current_amount
+                          //   }
+                          //   className="col-span-2 bg-gray-800 text-white  w-14"
+                          //   inputProps={{
+                          //     style: {
+                          //       backgroundColor: "#2D2D2D",
+                          //       color: "white",
+                          //     },
+                          //   }}
+                          // />
+                        )}
+                      </div>
+                      <div className="col-span-2">
+                        {Math.max(
+                          0,
+                          (item.min_amount || 0) -
+                            (item.current_inventory?.[0]?.total_number || 0)
+                        )}
+                      </div>
                     </div>
-                    <div className="col-span-2">
-                      {Math.max(
-                        0,
-                        (item.min_amount || 0) -
-                          (item.current_inventory?.[0]?.current_amount || 0)
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           ))}
         </div>

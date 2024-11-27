@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "../utils/supabase/server";
 import DataPage from "./shoppingList/data";
+import { Button } from "@mui/material";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
@@ -13,7 +14,7 @@ export default async function PrivatePage() {
 
   return (
     <div>
-      <p>Hello {data.user.email}</p>
+      <div>Hello {data.user.email}</div>
 
       <DataPage />
     </div>
