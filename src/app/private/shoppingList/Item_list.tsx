@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
@@ -24,13 +24,74 @@ const Item_list = (props: Props) => {
 
   const [detailWindow, setDetailWindow] = useState(false);
 
+  const [itemListCopy, setItemListCopy] = useState(itemList);
+
   // get all the unique item_category from the itemList
   const itemCategory = itemList?.map((item) => item.item_category);
   const uniqueItemCategory = itemCategory?.filter(
     (item, index) => itemCategory.indexOf(item) === index
   );
 
-  console.log(itemDetail);
+  // Warn user before refreshing/navigating away while editing
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isEditing) {
+        e.preventDefault();
+        e.returnValue =
+          "You have unsaved changes. Are you sure you want to leave this page?";
+      }
+    };
+
+    if (isEditing) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    } else {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    }
+
+    // Cleanup event listener on unmount
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isEditing]);
+
+  useEffect(() => {
+    if (!isEditing) return; // Skip adding the event listeners if not editing
+
+    let startY = 0; // To track the initial touch position
+    let hasConfirmed = false; // Flag to track if confirmation has been shown
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY; // Record the initial Y position of the touch
+      hasConfirmed = false; // Reset the flag on touch start
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+
+      // Check if the user is pulling down while at the top of the page
+      if (currentY > startY && window.scrollY === 0 && !hasConfirmed) {
+        // User is pulling down at the top of the page
+        e.preventDefault(); // Stop the pull-to-refresh
+        hasConfirmed = true; // Set the flag to true to prevent further confirmations
+        const confirmRefresh = confirm(
+          "You have unsaved changes. Are you sure you want to refresh the page? All your changes will be lost."
+        );
+        if (confirmRefresh) {
+          window.location.reload(); // Refresh the page if the user confirms
+        }
+      }
+    };
+
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove, {
+      passive: false, // Allow `preventDefault` in `touchmove`
+    });
+
+    return () => {
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [isEditing]);
 
   return (
     <>
@@ -130,14 +191,15 @@ const Item_list = (props: Props) => {
                     {!isEditing ? (
                       <div className="col-span-2">{item.min_amount}</div>
                     ) : (
-                      <Input
-                        type="number"
-                        defaultValue={item.min_amount}
-                        className="col-span-2 bg-gray-800 text-white w-14 px-1"
-                        inputProps={{
-                          style: { backgroundColor: "#2D2D2D", color: "white" },
-                        }}
-                      />
+                      <div className="col-span-2">{item.min_amount}</div>
+                      // <Input
+                      //   type="number"
+                      //   defaultValue={item.min_amount}
+                      //   className="col-span-2 bg-gray-800 text-white w-14 px-1"
+                      //   inputProps={{
+                      //     style: { backgroundColor: "#2D2D2D", color: "white" },
+                      //   }}
+                      // />
                     )}
                     <div className="col-span-2">
                       {!isEditing ? (
@@ -145,19 +207,22 @@ const Item_list = (props: Props) => {
                           {item.current_inventory[0]?.current_amount}
                         </div>
                       ) : (
-                        <Input
-                          type="number"
-                          defaultValue={
-                            item.current_inventory[0]?.current_amount
-                          }
-                          className="col-span-2 bg-gray-800 text-white  w-14"
-                          inputProps={{
-                            style: {
-                              backgroundColor: "#2D2D2D",
-                              color: "white",
-                            },
-                          }}
-                        />
+                        <div className="col-span-2">
+                          {item.current_inventory[0]?.current_amount}
+                        </div>
+                        // <Input
+                        //   type="number"
+                        //   defaultValue={
+                        //     item.current_inventory[0]?.current_amount
+                        //   }
+                        //   className="col-span-2 bg-gray-800 text-white  w-14"
+                        //   inputProps={{
+                        //     style: {
+                        //       backgroundColor: "#2D2D2D",
+                        //       color: "white",
+                        //     },
+                        //   }}
+                        // />
                       )}
                     </div>
                     <div className="col-span-2">
