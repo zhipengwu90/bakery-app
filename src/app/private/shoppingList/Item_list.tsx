@@ -2,9 +2,10 @@ import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
-import { IconButton } from "@mui/material";
-
+import { Backdrop, IconButton } from "@mui/material";
+import { useRouter } from "next/navigation";
 import CloseIcon from "@mui/icons-material/Close";
+import ChecklistIcon from "@mui/icons-material/Checklist";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon, Box } from "@mui/material";
@@ -14,6 +15,14 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import ItemDetail from "../components/ItemDetail";
+import MinAmountEditor from "../components/MinAmountEditor";
+import ShoppingList from "../../shoppinglist/parts/ShoppingListPage";
+import updateMin from "../../utils/sql/updateMin";
+import updateInventory from "@/app/utils/sql/updateInventory";
+
 type Props = {
   itemList: any[] | null;
   // itemList: {
@@ -26,6 +35,11 @@ type Props = {
   //     shopping_place: [];
   // } || null;
 };
+
+interface ShoppingItem {
+  id: number;
+  needAmount: number;
+}
 
 // Define an interface for the item
 interface Item {
@@ -48,14 +62,18 @@ const Item_list = (props: Props) => {
   const [itemDetail, setItemDetail] = useState<any | null>(null);
 
   const [detailWindow, setDetailWindow] = useState(false);
+  const [isCheckboxes, setIsCheckboxes] = useState(false);
 
   const [itemListCopy, setItemListCopy] = useState(copyItemList);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [updatedItemList, setUpdatedItemList] = useState([]);
   const [isMinOpen, setIsMinOpen] = useState(false);
   const [currentMinItem, setCurrentMinItem] = useState<Item | null>(null);
   const [isSpecialOpen, setIsSpecialOpen] = useState(false);
 
+  const router = useRouter();
+  const [checkedItems, setCheckedItems] = useState<ShoppingItem[]>([]);
   // get all the unique item_category from the itemList
   const itemCategory = itemList?.map((item) => item.item_category);
   const uniqueItemCategory = itemCategory?.filter(
@@ -66,20 +84,41 @@ const Item_list = (props: Props) => {
       icon: <CloudDoneIcon color="primary" />,
       name: "Submit",
       action: () => {
-        handleSubmit(), setIsEditing(false), setActions(menuActions);
+        handleSubmit();
       },
     },
     {
       icon: <CancelIcon color="error" />,
       name: "Cancel",
       action: () => {
-        confirm(
-         "您确定要取消吗？所有未保存的更改将丢失。"
-        ) && setIsEditing(false),
+        if (confirm("您确定要取消吗？所有未保存的更改将丢失。")) {
+          setIsEditing(false);
           setActions(menuActions);
+        }
       },
     },
   ];
+
+  // const ShoppingAction = [
+  //   {
+  //     icon: <CloudDoneIcon color="primary" />,
+  //     name: "Complete",
+  //     action: () => {
+  //       if (confirm("您确定要完成吗？")) {
+  //         setActions(menuActions);
+  //         setIsShoppingList(false);
+  //       }
+  //     },
+  //   },
+  //   {
+  //     icon: <CancelIcon color="error" />,
+  //     name: `Go${"\u00A0"}Back`,
+  //     action: () => {
+  //       setActions(menuActions);
+  //       setIsShoppingList(false);
+  //     },
+  //   },
+  // ];
 
   const menuActions = [
     {
@@ -90,39 +129,39 @@ const Item_list = (props: Props) => {
         setActions(EditActions);
       },
     },
-    { icon: <PlaylistAddIcon color="primary" />, name: "Add-Item" },
-    { icon: <FormatListNumberedIcon color="error" />, name: "Shopping-List" },
+    { icon: <PlaylistAddIcon color="primary" />, name: `Add${"\u00A0"}Item` },
+    {
+      icon: <ChecklistIcon color="error" />,
+      name: `Generate${"\u00A0"}List`,
+      action: () => {
+        setIsCheckboxes(true);
+      },
+    },
+    {
+      icon: <FormatListNumberedIcon color="error" />,
+      name: `Shopping${"\u00A0"}List`,
+      action: () => {
+        //navigate to the /shoppingList page
+        router.push("/shoppinglist");
+      },
+    },
   ];
 
   const [actions, setActions] = useState(menuActions);
 
   // Warn user before refreshing/navigating away while editing
   useEffect(() => {
-    const handleVisibilityChange = () => {
-        if (document.visibilityState === 'hidden' && isEditing) {
-            const confirmLeave = confirm(
-                "您有未保存的更改。您确定要离开此页面吗？"
-            );
-            if (!confirmLeave) {
-                // If the user cancels, bring them back to the page
-                window.history.pushState(null, '', window.location.href);
-            }
-        }
-    };
-
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-        if (isEditing) {
-            e.preventDefault();
-            e.returnValue = ""; // This is necessary for some browsers to show the confirmation dialog
-        }
+      if (isEditing) {
+        e.preventDefault();
+        e.returnValue = ""; // This is necessary for some browsers to show the confirmation dialog
+      }
     };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-        document.removeEventListener("visibilitychange", handleVisibilityChange);
-        window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [isEditing]);
 
@@ -214,154 +253,229 @@ const Item_list = (props: Props) => {
     return differentObjects;
   };
 
-  const handleSubmit = () => {
-    console.log(findDifferingMinAmountIds());
-    console.log(findDifferingTotalNumberIds());
+  const handleCheckboxChange = (
+    id: number,
+    needAmount: number,
+    isChecked: boolean
+  ) => {
+    if (!isChecked) {
+      // Remove the item from the ShoppingItem if unchecked
+      setCheckedItems((prev) => prev.filter((item) => item.id !== id));
+      return;
+    } else {
+      setCheckedItems((prev) => {
+        return [...prev, { id, needAmount }]; // Add the item as a ShoppingItem if checked
+      });
+    }
+  };
+  // Call the timeOut function
 
-    setIsEditing(!isEditing);
+  const handleSubmit = async () => {
+    setIsSaving(true);
+    let minAmountArray = findDifferingMinAmountIds();
+    let updateInventoryArray = findDifferingTotalNumberIds();
+    console.log(minAmountArray);
+    console.log(updateInventoryArray);
+
+    if (minAmountArray.length > 0) {
+      await Promise.all(
+        minAmountArray.map(async (item: any) => {
+          const result = await updateMin(item.id, item.min_amount);
+          if (!result.success) {
+            console.error(
+              `Failed to update min for item ID ${item.id}: ${result.error}`
+            );
+          }
+        })
+      );
+    }
+    if (updateInventoryArray.length > 0) {
+      await Promise.all(
+        updateInventoryArray.map(async (item: any) => {
+          const result = await updateInventory(
+            item.id,
+            item.count_amount,
+            item.previous_total_number
+          );
+          if (!result.success) {
+            console.error(
+              `Failed to update inventory for item ID ${item.id}: ${result.error}`
+            );
+          }
+        })
+      );
+    }
+
+    setIsSaving(false);
+
+    setIsEditing(false);
+    setActions(menuActions);
+    //let the page refresh
+    window.location.reload();
   };
 
+  const handleMinus = (item: any) => {
+    let currentItem = item;
+
+    // Check if current_inventory exists and has at least one item
+    if (
+      currentItem.current_inventory == null ||
+      currentItem.current_inventory.length === 0
+    ) {
+      let newInventory = { total_number: 0 };
+      currentItem.current_inventory.push(newInventory);
+      setItemListCopy((prevItemList) =>
+        prevItemList
+          ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i))
+          : []
+      );
+      return;
+    }
+    // Check if total_number is less than or equal to 0
+    if (currentItem.current_inventory[0].total_number <= 0) {
+      console.log("Total number is 0 or less, cannot decrement");
+      return; // Exit if total_number is 0 or less
+    }
+
+    // Decrement total_number
+    currentItem.current_inventory[0].total_number -= 1;
+
+    // Update the itemListCopy by mapping over the existing items
+    setItemListCopy((prevItemList) =>
+      prevItemList
+        ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i))
+        : []
+    );
+  };
+
+  const handleAdd = (item: any) => {
+    let currentItem = item;
+
+    // Check if current_inventory exists and has at least one item
+    if (
+      currentItem.current_inventory == null ||
+      currentItem.current_inventory.length === 0
+    ) {
+      let newInventory = { total_number: 0 };
+      currentItem.current_inventory.push(newInventory);
+      setItemListCopy((prevItemList) =>
+        prevItemList
+          ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i))
+          : []
+      );
+      return;
+    }
+
+    // Decrement total_number
+    currentItem.current_inventory[0].total_number += 1;
+
+    // Update the itemListCopy by mapping over the existing items
+    setItemListCopy((prevItemList) =>
+      prevItemList
+        ? prevItemList.map((i) => (i.id === currentItem.id ? currentItem : i))
+        : []
+    );
+  };
+
+  const handleShoppingSubmit = () => {
+    setIsSaving(true);
+
+    console.log(checkedItems);
+    setIsCheckboxes(false);
+    setIsSaving(false);
+  };
+
+  useEffect(() => {
+    if (isCheckboxes) {
+      ///loop through itemListCopy and check the item.min_amount - item.current_inventory.total_number, if bigger than 0, add to checkedItems
+      itemListCopy?.forEach((item) => {
+        let needAmount = Math.max(
+          0,
+          (item.min_amount || 0) -
+            (item.current_inventory?.[0]?.total_number || 0)
+        );
+        if (needAmount > 0) {
+          setCheckedItems((prev) => [...prev, { id: item.id, needAmount }]);
+        }
+      });
+    } else if (!isCheckboxes) {
+      setCheckedItems([]);
+    }
+  }, [isCheckboxes]);
+
   return (
+    
     <>
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: "fixed", bottom: 16, right: 16 }}
-        icon={<SpeedDialIcon />}
-        onClose={() => setIsSpecialOpen(false)}
-        onOpen={() => setIsSpecialOpen(true)}
-        open={isSpecialOpen}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipOpen
-            tooltipTitle={action.name}
-            onClick={() => {
-              action.action && action.action();
-              setIsSpecialOpen(false);
-            }}
-          />
-        ))}
-      </SpeedDial>
+      {!isSaving && !isCheckboxes && (
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{ position: "fixed", bottom: 16, right: 16 }}
+          icon={<SpeedDialIcon />}
+          onClose={() => setIsSpecialOpen(false)}
+          onOpen={() => setIsSpecialOpen(true)}
+          open={isSpecialOpen}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipOpen
+              tooltipTitle={action.name}
+              onClick={() => {
+                action.action && action.action();
+                setIsSpecialOpen(false);
+              }}
+            />
+          ))}
+        </SpeedDial>
+      )}
 
-      <div className="flex flex-row  gap-4 h-full">
+      <Backdrop sx={{ color: "#fff" }} open={isSaving}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+      <div className="flex flex-row  gap-4 h-full pb-20">
         {detailWindow && (
-          <>
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-10"
-              onClick={() => setDetailWindow(false)}
-            ></div>
-            <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg">
-              <div className="flex flex-row items-center justify-end gap-4">
-                <IconButton
-                  onClick={() => setDetailWindow(!detailWindow)}
-                  className="absolute top-0 right-0"
-                >
-                  <CloseIcon className="text-dark " />
-                </IconButton>
-              </div>
-
-              <div className="flex flex-col px-3">
-                <div className="text-lg text-dark font-bold">
-                  {itemDetail?.name}
-                </div>
-                {itemDetail?.img_url ? (
-                  <Image
-                    src={itemDetail?.img_url}
-                    alt={itemDetail?.name}
-                    width={200}
-                    height={200}
-                  />
-                ) : null}
-                <div className=" text-dark">{itemDetail?.item_category}</div>
-                <div className=" text-dark ">{itemDetail?.item_location}</div>
-              </div>
-            </div>
-          </>
+          <ItemDetail
+            itemDetail={itemDetail}
+            setDetailWindow={setDetailWindow}
+          />
         )}
         {isMinOpen && (
-          <>
-            <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-20"
-              onClick={() => setIsMinOpen(false)}
-            ></div>
-            <div
-              className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-1/3 lg:w-2/3 h-1/4 bg-white z-20 rounded-lg
-          
-           text-dark flex flex-col justify-center items-center gap-6"
-            >
-              <div className="flex flex-col justify-center items-center">
-                <div className="text-lg font-bold">{currentMinItem?.name}</div>
-                <p>Min #: </p>
-                <div className="flex flex-row justify-center items-center">
-                  <IconButton
-                    size="medium"
-                    sx = {{paddingLeft: 2, paddingRight: 2}}
-                    color="primary"
-                    onClick={() => {
-                      if (currentMinItem && currentMinItem.min_amount <= 0) {
-                        console.log(
-                          "Min amount is 0 or less, cannot decrement"
-                        );
-                        return; // Exit if min_amount is 0 or less
-                      } else {
-                        if (currentMinItem) {
-                          currentMinItem.min_amount -= 1;
-                          setItemListCopy((prevItemList) =>
-                            prevItemList
-                              ? prevItemList.map((i) =>
-                                  i.id === currentMinItem.id
-                                    ? currentMinItem
-                                    : i
-                                )
-                              : []
-                          );
-                        }
-                      }
-                    }}
-                  >
-                    <RemoveIcon />
-                  </IconButton>
-                  <div>{currentMinItem?.min_amount}</div>
-                  <IconButton
-                    size="small"
-                    sx = {{paddingLeft: 2, paddingRight: 2}}
-                    color="primary"
-                    onClick={() => {
-                      let currentItem = currentMinItem;
-                      if (currentItem) {
-                        currentItem.min_amount += 1;
-                        setItemListCopy((prevItemList) =>
-                          prevItemList
-                            ? prevItemList.map((i) =>
-                                i.id === currentItem.id ? currentItem : i
-                              )
-                            : []
-                        );
-                      }
-                    }}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </div>
-              </div>
+          <MinAmountEditor
+            currentMinItem={currentMinItem}
+            setIsMinOpen={setIsMinOpen}
+            setItemListCopy={setItemListCopy}
+          />
+        )}
+
+        <div className="w-full  ">
+          {isCheckboxes && (
+            <div className=" fixed bottom-10 left-[50%] translate-x-[-50%] flex flex-row gap-3">
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setIsMinOpen(false)}
+                onClick={handleShoppingSubmit}
               >
-                Done
+                Create
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => setIsCheckboxes(false)}
+              >
+                Cancel
               </Button>
             </div>
-          </>
-        )}
-
-        <div className="w-full ">
+          )}
           <div className="grid  grid-cols-10 place-items-center text-xl font-bold mb-3 sticky top-20">
+            {isCheckboxes && <div className="col-span-1"></div>}
             <div className="place-self-start col-span-3 pl-1 ">Name</div>
+
             <div className="col-span-2">Min #</div>
-            <div className="col-span-3">Count #</div>
+            <div className={`${isCheckboxes ? "col-span-2" : "col-span-3"}`}>
+              Count #
+            </div>
             <div className="col-span-2">Need #</div>
           </div>
 
@@ -373,11 +487,32 @@ const Item_list = (props: Props) => {
               {itemListCopy
                 ?.filter((item) => item.item_category === category)
                 .map((item) => {
+                  let needAmount = Math.max(
+                    0,
+                    (item.min_amount || 0) -
+                      (item.current_inventory?.[0]?.total_number || 0)
+                  );
                   return (
                     <div
                       key={item.id}
                       className="grid grid-cols-10 py-2 place-items-center"
                     >
+                      {isCheckboxes && (
+                        <input
+                          className="col-span-1"
+                          type="checkbox"
+                          // Check if the item is checked based on needAmount or checkedItems state
+                          defaultChecked={needAmount > 0}
+                          onChange={(e) =>
+                            handleCheckboxChange(
+                              item.id,
+                              needAmount,
+                              e.target.checked
+                            )
+                          }
+                        />
+                      )}
+
                       <div
                         className="col-span-3 place-self-start pl-4 hover:underline hover:cursor-pointer 
                      hover:text-[#ff5151] 
@@ -404,63 +539,20 @@ const Item_list = (props: Props) => {
                           </div>
                         </>
                       )}
-                      <div className="col-span-3">
+                      <div
+                        className={`${
+                          isCheckboxes ? "col-span-2" : "col-span-3"
+                        }`}
+                      >
                         {!isEditing ? (
                           <div>{item.current_inventory[0]?.total_number}</div>
                         ) : (
                           <div className="">
                             <IconButton
                               size="small"
-                              sx = {{paddingLeft: 1, paddingRight: 2}}
+                              sx={{ paddingLeft: 1, paddingRight: 2 }}
                               color="primary"
-                              onClick={() => {
-                                let currentItem = item;
-
-                                // Check if current_inventory exists and has at least one item
-                                if (
-                                  currentItem.current_inventory == null ||
-                                  currentItem.current_inventory.length === 0
-                                ) {
-                                  let newInventory = { total_number: 0 };
-                                  currentItem.current_inventory.push(
-                                    newInventory
-                                  );
-                                  setItemListCopy((prevItemList) =>
-                                    prevItemList
-                                      ? prevItemList.map((i) =>
-                                          i.id === currentItem.id
-                                            ? currentItem
-                                            : i
-                                        )
-                                      : []
-                                  );
-                                  return;
-                                }
-                                // Check if total_number is less than or equal to 0
-                                if (
-                                  currentItem.current_inventory[0]
-                                    .total_number <= 0
-                                ) {
-                                  console.log(
-                                    "Total number is 0 or less, cannot decrement"
-                                  );
-                                  return; // Exit if total_number is 0 or less
-                                }
-
-                                // Decrement total_number
-                                currentItem.current_inventory[0].total_number -= 1;
-
-                                // Update the itemListCopy by mapping over the existing items
-                                setItemListCopy((prevItemList) =>
-                                  prevItemList
-                                    ? prevItemList.map((i) =>
-                                        i.id === currentItem.id
-                                          ? currentItem
-                                          : i
-                                      )
-                                    : []
-                                );
-                              }}
+                              onClick={() => handleMinus(item)}
                             >
                               <RemoveIcon />
                             </IconButton>
@@ -471,59 +563,16 @@ const Item_list = (props: Props) => {
                               : item.current_inventory[0]?.total_number}
                             <IconButton
                               size="small"
-                              sx = {{paddingLeft: 2, paddingRight: 1}}
+                              sx={{ paddingLeft: 2, paddingRight: 1 }}
                               color="primary"
-                              onClick={() => {
-                                let currentItem = item;
-
-                                // Check if current_inventory exists and has at least one item
-                                if (
-                                  currentItem.current_inventory == null ||
-                                  currentItem.current_inventory.length === 0
-                                ) {
-                                  let newInventory = { total_number: 0 };
-                                  currentItem.current_inventory.push(
-                                    newInventory
-                                  );
-                                  setItemListCopy((prevItemList) =>
-                                    prevItemList
-                                      ? prevItemList.map((i) =>
-                                          i.id === currentItem.id
-                                            ? currentItem
-                                            : i
-                                        )
-                                      : []
-                                  );
-                                  return;
-                                }
-
-                                // Decrement total_number
-                                currentItem.current_inventory[0].total_number += 1;
-
-                                // Update the itemListCopy by mapping over the existing items
-                                setItemListCopy((prevItemList) =>
-                                  prevItemList
-                                    ? prevItemList.map((i) =>
-                                        i.id === currentItem.id
-                                          ? currentItem
-                                          : i
-                                      )
-                                    : []
-                                );
-                              }}
+                              onClick={() => handleAdd(item)}
                             >
                               <AddIcon />
                             </IconButton>
                           </div>
                         )}
                       </div>
-                      <div className="col-span-2">
-                        {Math.max(
-                          0,
-                          (item.min_amount || 0) -
-                            (item.current_inventory?.[0]?.total_number || 0)
-                        )}
-                      </div>
+                      <div className="col-span-2">{needAmount}</div>
                     </div>
                   );
                 })}

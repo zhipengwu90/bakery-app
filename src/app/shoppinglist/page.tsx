@@ -1,10 +1,10 @@
+import React from "react";
 import { redirect } from "next/navigation";
-
+import ShoppingListPage from "./parts/ShoppingListPage";
 import { createClient } from "../utils/supabase/server";
-import DataPage from "./shoppingList/data";
+type Props = {};
 
-
-export default async function PrivatePage() {
+export default async function ShoppingList() {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getUser();
@@ -15,8 +15,7 @@ export default async function PrivatePage() {
   return (
     <div>
       <div>Hello {data.user.email}</div>
-
-      <DataPage />
+      <ShoppingListPage />
     </div>
   );
 }

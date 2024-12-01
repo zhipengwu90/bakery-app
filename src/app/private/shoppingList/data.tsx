@@ -3,6 +3,7 @@ import React from "react";
 import { createClient } from "../../utils/supabase/client";
 import { useEffect, useState } from "react";
 import Item_list from "./Item_list";
+import { CircularProgress } from "@mui/material";
 type Props = {};
 
 const DataPage = (props: Props) => {
@@ -14,16 +15,19 @@ const DataPage = (props: Props) => {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const { data, error } = await supabase.from("item_list").select(
-        `*,
+      const { data, error } = await supabase
+        .from("item_list")
+        .select(
+          `*,
          current_inventory (
       *
         
         )
         `
-      )
-      .order("date", { foreignTable: "current_inventory", ascending: false })
-      .limit(1, { foreignTable: "current_inventory" });
+        )
+        .order("name", { ascending: true })
+        .order("date", { foreignTable: "current_inventory", ascending: false })
+        .limit(1, { foreignTable: "current_inventory" });
 
       console.log(error);
       setItemList(data);
@@ -33,7 +37,13 @@ const DataPage = (props: Props) => {
   }, []);
   return (
     <div className="w-full">
-      {loading ? <div>Loading...</div> : <Item_list itemList={itemList} />}
+      {loading ? (
+        <div className="flex justify-center items-center h-full">
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <Item_list itemList={itemList} />
+      )}
     </div>
   );
 };
