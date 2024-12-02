@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,Suspense } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { login } from "./actions";
@@ -77,4 +77,10 @@ const Login = (props: Props) => {
   );
 };
 
-export default Login;
+const LoginPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <Login />
+  </Suspense>
+);
+
+export default LoginPage;
