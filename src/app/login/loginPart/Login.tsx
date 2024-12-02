@@ -3,26 +3,18 @@ import React, { useState, useEffect, Suspense } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { login } from "./actions";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+
 import CircularProgress from "@mui/material/CircularProgress";
-import Backdrop from "@mui/material/Backdrop";
+
 type Props = {};
 
-const Login = (props: Props) => {
+const LoginPage = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const error = searchParams.get("error");
-    if (error) {
-      console.log(error);
-      setErrorMessage(error);
-    }
-  }, [searchParams]);
+  const router = useRouter();
   const loginHandler = async () => {
     setIsLoading(true);
     setErrorMessage(""); // Clear previous error message
@@ -32,12 +24,16 @@ const Login = (props: Props) => {
       return;
     }
     try {
-      await login(email, password);
+      const result = await login(email, password);
+      if (result.success) {
+        router.push("/private");
+        setIsLoading(false);
+      } else {
+        setErrorMessage(result.message || "An unknown error occurred.");
+      }
     } catch (error) {
       console.error("Login failed:", error);
-      setErrorMessage("Invalid login credentials.");
-    } finally {
-      setIsLoading(false);
+      setErrorMessage("Invalid login credentials. Please try again.");
     }
   };
 
@@ -47,7 +43,6 @@ const Login = (props: Props) => {
     }
   };
 
-  
   return (
     <div className="flex justify-center items-center h-[80vh]">
       {isLoading && (
@@ -66,8 +61,8 @@ const Login = (props: Props) => {
             placeholder="Enter your email"
             className="w-1/2 lg:w-4/5  z-0"
             onChange={(e) => {
-              setEmail(e.target.value)
-              setErrorMessage("")
+              setEmail(e.target.value);
+              setErrorMessage("");
             }}
             onKeyDown={handleKeyPress}
           />
@@ -78,8 +73,8 @@ const Login = (props: Props) => {
             color="primary"
             className="w-1/2 lg:w-4/5 z-0 "
             onChange={(e) => {
-              setPassword(e.target.value)
-              setErrorMessage("")
+              setPassword(e.target.value);
+              setErrorMessage("");
             }}
             onKeyDown={handleKeyPress}
           />
@@ -102,10 +97,10 @@ const Login = (props: Props) => {
   );
 };
 
-const LoginPage = () => (
-  <Suspense fallback={<div>Loading...</div>}>
-    <Login />
-  </Suspense>
-);
+// const LoginPage = () => (
+//   <Suspense fallback={<div>Loading...</div>}>
+//     <Login />
+//   </Suspense>
+// );
 
 export default LoginPage;
