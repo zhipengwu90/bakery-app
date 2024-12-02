@@ -53,13 +53,15 @@ const ShoppingListPage = (props: Props) => {
               </div>
             ))}
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => router.push("/private")}
-          >
-            Go to Inventory
-          </Button>
+          <div className="flex justify-center items-center gap-2">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push("/private")}
+            >
+              Go to Inventory
+            </Button>
+          </div>
         </>
       ) : (
         <>
@@ -68,13 +70,15 @@ const ShoppingListPage = (props: Props) => {
             It looks like you don't have any items in your shopping list yet.
             Please go to your inventory and generate a list to get started!
           </p>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => router.push("/private")}
-          >
-            Go to Inventory
-          </Button>
+          <div className="flex justify-center items-center gap-2">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push("/private")}
+            >
+              Go to Inventory
+            </Button>
+          </div>
         </>
       )}
     </div>

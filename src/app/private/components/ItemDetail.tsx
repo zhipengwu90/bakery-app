@@ -16,6 +16,8 @@ const ItemDetail =(props: Props) => {
 
     const { itemDetail, setDetailWindow } = props;
 
+    console.log(itemDetail);
+
     return (
         <>
         <div
@@ -31,6 +33,10 @@ const ItemDetail =(props: Props) => {
               <CloseIcon className="text-dark " />
             </IconButton>
           </div>
+          <h1 className='text-dark p-3 text-lg font-bold'>
+
+              Item Details
+          </h1>
 
           <div className="flex flex-col px-3">
             <div className="text-lg text-dark font-bold">

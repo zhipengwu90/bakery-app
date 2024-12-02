@@ -19,8 +19,8 @@ export async function login(email: string, password: string) {
 
   if (error) {
     console.log(error);
-    redirect("/error");
-  }
+    redirect(`/login?error=${encodeURIComponent(error.message)}`);
+}
   console.log("login successful");
   revalidatePath("/", "layout");
   redirect("/private");

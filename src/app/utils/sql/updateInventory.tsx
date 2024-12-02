@@ -1,3 +1,4 @@
+
 import { createClient } from "../supabase/client";
 
 const supabase = createClient();
@@ -18,6 +19,8 @@ const updateInventory = async (
     .toLocaleDateString("en-CA", options)
     .split("/")
     .join("-"); // Format as YYYY-MM-DD
+
+     console.log(item_id, count_amount, previous_total, formattedDate);
 
   const { error } = await supabase.from("current_inventory").insert([
     {

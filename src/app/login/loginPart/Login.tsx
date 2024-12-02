@@ -3,13 +3,24 @@ import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { login } from "./actions";
+import { useSearchParams } from "next/navigation";
 
 type Props = {};
 
 const Login = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      console.log(error);
+      setErrorMessage(error);
+    }
+  }, [searchParams]);
   const loginHandler = () => {
     if (email.trim() === "" || password.trim() === "") {
       console.log("Email and password cannot be empty.");
@@ -47,7 +58,12 @@ const Login = (props: Props) => {
             onChange={(e) => setPassword(e.target.value)}
             onKeyPress={handleKeyPress}
           />
+
+          {errorMessage && (
+            <div className="text-red-500 text-sm font-bold">{errorMessage}</div>
+          )}
         </div>
+
         <Button
           disabled={email === "" || password === ""}
           onClick={loginHandler}

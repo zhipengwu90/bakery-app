@@ -19,9 +19,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import ItemDetail from "../components/ItemDetail";
 import MinAmountEditor from "../components/MinAmountEditor";
-import ShoppingList from "../../shoppinglist/parts/ShoppingListPage";
+import Alert from "@mui/material/Alert";
 import updateMin from "../../utils/sql/updateMin";
 import updateInventory from "@/app/utils/sql/updateInventory";
+import generateShopList from "../../utils/sql/generateShopList";
 
 type Props = {
   itemList: any[] | null;
@@ -72,6 +73,9 @@ const Item_list = (props: Props) => {
   const [currentMinItem, setCurrentMinItem] = useState<Item | null>(null);
   const [isSpecialOpen, setIsSpecialOpen] = useState(false);
 
+  const [alert, setAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const router = useRouter();
   const [checkedItems, setCheckedItems] = useState<ShoppingItem[]>([]);
   // get all the unique item_category from the itemList
@@ -79,6 +83,7 @@ const Item_list = (props: Props) => {
   const uniqueItemCategory = itemCategory?.filter(
     (item, index) => itemCategory.indexOf(item) === index
   );
+
   const EditActions = [
     {
       icon: <CloudDoneIcon color="primary" />,
@@ -99,7 +104,6 @@ const Item_list = (props: Props) => {
     },
   ];
 
-  // const ShoppingAction = [
   //   {
   //     icon: <CloudDoneIcon color="primary" />,
   //     name: "Complete",
@@ -274,14 +278,19 @@ const Item_list = (props: Props) => {
     setIsSaving(true);
     let minAmountArray = findDifferingMinAmountIds();
     let updateInventoryArray = findDifferingTotalNumberIds();
-    console.log(minAmountArray);
-    console.log(updateInventoryArray);
+
+    let allMinUpdatesSuccessful = true;
+    let allInventoryUpdatesSuccessful = true;
 
     if (minAmountArray.length > 0) {
       await Promise.all(
         minAmountArray.map(async (item: any) => {
           const result = await updateMin(item.id, item.min_amount);
           if (!result.success) {
+            allMinUpdatesSuccessful = false;
+            setAlert(true);
+            setAlertMessage("保存失败, 请重试");
+            setIsError(true);
             console.error(
               `Failed to update min for item ID ${item.id}: ${result.error}`
             );
@@ -289,6 +298,7 @@ const Item_list = (props: Props) => {
         })
       );
     }
+
     if (updateInventoryArray.length > 0) {
       await Promise.all(
         updateInventoryArray.map(async (item: any) => {
@@ -298,6 +308,10 @@ const Item_list = (props: Props) => {
             item.previous_total_number
           );
           if (!result.success) {
+            allInventoryUpdatesSuccessful = false;
+            setAlert(true);
+            setAlertMessage("保存失败, 请重试");
+            setIsError(true);
             console.error(
               `Failed to update inventory for item ID ${item.id}: ${result.error}`
             );
@@ -306,12 +320,17 @@ const Item_list = (props: Props) => {
       );
     }
 
+    if (allMinUpdatesSuccessful && allInventoryUpdatesSuccessful) {
+      setAlert(true);
+      setAlertMessage("保存成功, 请创建购物清单");
+      setIsError(false);
+    }
     setIsSaving(false);
 
     setIsEditing(false);
     setActions(menuActions);
     //let the page refresh
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleMinus = (item: any) => {
@@ -377,10 +396,43 @@ const Item_list = (props: Props) => {
     );
   };
 
-  const handleShoppingSubmit = () => {
+  const handleShoppingSubmit = async () => {
     setIsSaving(true);
 
     console.log(checkedItems);
+
+    const userConfirmed = confirm(
+      "创建新的购物清单， 之前创立未完成的将购物清单将会被删除"
+    );
+    if (userConfirmed) {
+      if (checkedItems.length > 0) {
+        let allSuccessful = true;
+
+        await Promise.all(
+          checkedItems.map(async (item: any) => {
+            const result = await generateShopList(item.id, item.needAmount);
+            if (!result.success) {
+              allSuccessful = false;
+              setAlert(true);
+              setAlertMessage(
+                `Failed to generate shopping list, please try again!`
+              );
+              setIsError(true);
+              console.error(
+                `Failed to generate shopping list, please try again!`
+              );
+            }
+          })
+        );
+
+        if (allSuccessful) {
+          setAlert(true);
+          setAlertMessage("添加成功, 请前往购物清单查看");
+          setIsError(false);
+        }
+      }
+    }
+
     setIsCheckboxes(false);
     setIsSaving(false);
   };
@@ -402,10 +454,34 @@ const Item_list = (props: Props) => {
       setCheckedItems([]);
     }
   }, [isCheckboxes]);
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(false);
+        setAlertMessage("");
+        setIsError(false);
+      }, 5000); // Auto close after 5 seconds
+
+      return () => clearTimeout(timer); // Clear the timer if the component unmounts or alert changes
+    }
+  }, [alert]);
 
   return (
-    
     <>
+      {alert && (
+        <Alert
+          variant="filled"
+          onClose={() => {
+            setAlert(false);
+            setAlertMessage("");
+            setIsError(false);
+          }}
+          className="fixed bottom-10 left-[50%] translate-x-[-50%]"
+          severity={isError ? "error" : "success"}
+        >
+          {alertMessage}
+        </Alert>
+      )}
       {!isSaving && !isCheckboxes && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"

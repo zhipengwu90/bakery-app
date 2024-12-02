@@ -26,7 +26,7 @@ const DataPage = (props: Props) => {
         `
         )
         .order("name", { ascending: true })
-        .order("date", { foreignTable: "current_inventory", ascending: false })
+        .order("timestamps", { foreignTable: "current_inventory", ascending: false })
         .limit(1, { foreignTable: "current_inventory" });
 
       console.log(error);
