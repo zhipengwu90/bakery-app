@@ -1,11 +1,9 @@
-import React from 'react'
-import Login from './loginPart/Login';
-type Props = {}
+import React from "react";
+import LoginPage from "./loginPart/Login";
+type Props = {};
 
 const Page = (props: Props) => {
-  return (
-    <Login />
-  )
+  return <LoginPage />;
 };
 
 export default Page;
