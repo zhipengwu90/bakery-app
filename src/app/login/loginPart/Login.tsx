@@ -1,16 +1,18 @@
 "use client";
-import React, { useState, useEffect,Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { login } from "./actions";
 import { useSearchParams } from "next/navigation";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
 type Props = {};
 
 const Login = (props: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -21,12 +23,22 @@ const Login = (props: Props) => {
       setErrorMessage(error);
     }
   }, [searchParams]);
-  const loginHandler = () => {
+  const loginHandler = async () => {
+    setIsLoading(true);
+    setErrorMessage(""); // Clear previous error message
     if (email.trim() === "" || password.trim() === "") {
       console.log("Email and password cannot be empty.");
+      setIsLoading(false);
       return;
     }
-    login(email, password);
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error("Login failed:", error);
+      setErrorMessage("Invalid login credentials.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -35,9 +47,16 @@ const Login = (props: Props) => {
     }
   };
 
+  
   return (
     <div className="flex justify-center items-center h-[80vh]">
-      <div className="border border-1 bg-white flex flex-col gap-3 justify-around items-center rounded-lg w-1/2 h-1/2 lg:w-3/4 lg:h-3/4  ">
+      {isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <CircularProgress color="inherit" />
+        </div>
+      )}
+
+      <div className="border border-1 bg-white flex flex-col gap-3 justify-around items-center rounded-lg w-1/2 h-2/3 lg:w-3/4 lg:h-3/4 py-5">
         <div className="text-dark text-xl font-bold"> Admin Login </div>
         <div className=" flex flex-col gap-3 w-full justify-center items-center ">
           <TextField
@@ -46,8 +65,11 @@ const Login = (props: Props) => {
             type="email"
             placeholder="Enter your email"
             className="w-1/2 lg:w-4/5  z-0"
-            onChange={(e) => setEmail(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setErrorMessage("")
+            }}
+            onKeyDown={handleKeyPress}
           />
           <TextField
             label="Password"
@@ -55,8 +77,11 @@ const Login = (props: Props) => {
             placeholder="Enter your password"
             color="primary"
             className="w-1/2 lg:w-4/5 z-0 "
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setErrorMessage("")
+            }}
+            onKeyDown={handleKeyPress}
           />
 
           {errorMessage && (
