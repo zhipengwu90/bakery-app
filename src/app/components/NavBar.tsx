@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
         {title}
 
         <span
-          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 bg-light
+          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 bg-dark
         ${pathname === href ? "w-full" : "w-0"}`}
         >
           &nbsp;
@@ -123,23 +123,23 @@ const NavBar: React.FC = () => {
   );
 
   return (
-    <header className="sticky top-0 w-full px-32 py-8  xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6    font-medium flex items-center justify-between text-light  bg-[#161616] bg-opacity-90">
+    <header className="sticky z-50 top-0 w-full px-32 py-7  xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6    font-semibold text-lg flex items-center justify-between text-dark bg-white  bg-opacity-90">
       <button
         className="flex-col justify-center items-center hidden lg:flex"
         onClick={handleToggle}
       >
         <span
-          className={`bg-light block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
+          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
             isOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"
           }`}
         ></span>
         <span
-          className={`bg-light block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
+          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
             isOpen ? "opacity-0" : "opacity-100"
           }`}
         ></span>
         <span
-          className={`bg-light block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
+          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
             isOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"
           }`}
         ></span>

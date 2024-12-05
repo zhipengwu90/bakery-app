@@ -68,7 +68,6 @@ const Item_list = (props: Props) => {
   const [itemListCopy, setItemListCopy] = useState(copyItemList);
   const [isSaving, setIsSaving] = useState(false);
 
-  const [updatedItemList, setUpdatedItemList] = useState([]);
   const [isMinOpen, setIsMinOpen] = useState(false);
   const [currentMinItem, setCurrentMinItem] = useState<Item | null>(null);
   const [isSpecialOpen, setIsSpecialOpen] = useState(false);
@@ -482,7 +481,7 @@ const Item_list = (props: Props) => {
           {alertMessage}
         </Alert>
       )}
-      {!isSaving && !isCheckboxes && (
+      {!isSaving && !isCheckboxes && !detailWindow && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
@@ -515,6 +514,7 @@ const Item_list = (props: Props) => {
           <ItemDetail
             itemDetail={itemDetail}
             setDetailWindow={setDetailWindow}
+            isEditing={isEditing}
           />
         )}
         {isMinOpen && (

@@ -1,11 +1,9 @@
-import React from 'react'
-
-type Props = {}
+import React from "react";
+import AboutContent from "./AboutPart/AboutContent";
+type Props = {};
 
 const About = (props: Props) => {
-  return (
-    <div>About</div>
-  )
+  return <AboutContent />;
 };
 
 export default About;

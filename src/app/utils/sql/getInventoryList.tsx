@@ -1,4 +1,4 @@
-import exp from "constants";
+
 import { createClient } from "../supabase/client";
 
 const supabase = createClient();
