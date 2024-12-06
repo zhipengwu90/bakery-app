@@ -544,7 +544,7 @@ const Item_list = (props: Props) => {
               </Button>
             </div>
           )}
-          <div className="grid  grid-cols-10 place-items-center text-xl font-bold mb-3 sticky top-20">
+          <div className="grid  grid-cols-10 place-items-center text-xl font-bold mb-3 sticky top-20 bg-white bg-opacity-90">
             {isCheckboxes && <div className="col-span-1"></div>}
             <div className="place-self-start col-span-3 pl-1 ">Name</div>
 

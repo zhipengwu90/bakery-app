@@ -15,7 +15,18 @@ const uploadItemImage = async (file: File, name: string) => {
     console.error("Error uploading image:", error.message);
     return { success: false, error: error.message };
   } else {
-    return { success: true, data };
+
+    // Get the public URL of the uploaded file
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("item_photo").getPublicUrl(fileName);
+
+    if (!publicUrl) {
+      console.error("Error getting public URL");
+      return { success: false, error: "Error getting public URL" };
+    }
+    console.log("Public URL:", publicUrl);
+    return { success: true, url: publicUrl };
   }
 };
 

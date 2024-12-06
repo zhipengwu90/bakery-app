@@ -27,12 +27,13 @@ const LoginPage = (props: Props) => {
       const result = await login(email, password);
       if (result.success) {
         router.push("/private");
-        setIsLoading(false);
       } else {
+        setIsLoading(false);
         setErrorMessage(result.message || "An unknown error occurred.");
       }
     } catch (error) {
       console.error("Login failed:", error);
+      setIsLoading(false);
       setErrorMessage("Invalid login credentials. Please try again.");
     }
   };

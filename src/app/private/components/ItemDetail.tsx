@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { IconButton, Button, Alert } from "@mui/material";
+import {
+  Box,
+  Modal,
+  IconButton,
+  Button,
+  Alert,
+  Backdrop,
+  CircularProgress,
+} from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Select, MenuItem } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +27,17 @@ const ItemDetail = (props: Props) => {
   const { itemDetail, setDetailWindow, isEditing } = props;
   const [isEditDetail, setIsEditDetail] = useState(false);
   const [itemCategory, setItemCategory] = useState<any | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(itemDetail?.img_url || "");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleImageClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
 
   const [itemCategoryValue, setItemCategoryValue] = useState(
     itemDetail?.item_category || ""
@@ -31,8 +49,8 @@ const ItemDetail = (props: Props) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  console.log("itemDetail", itemDetail);
   const handleUploadClick = () => {
-
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -43,8 +61,14 @@ const ItemDetail = (props: Props) => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      setIsUploading(true);
+
       const result = await uploadItemImage(file, itemDetail?.name);
-      console.log("Upload image result:", result);
+
+      if (result.success) {
+        setImageUrl(result.url);
+      }
+      setIsUploading(false);
     }
   };
 
@@ -81,21 +105,26 @@ const ItemDetail = (props: Props) => {
 
   return (
     <>
+      <Backdrop sx={{ color: "#fff" }} open={isUploading} className="z-20">
+        <CircularProgress color="success" />
+      </Backdrop>
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-10"
         onClick={() => setDetailWindow(false)}
       ></div>
       <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg shadow-md  overflow-y-auto">
-        <div className="flex flex-row items-center p-1 justify-between sticky top-0 bg-white border-b border-gray-300">
-          <IconButton
-            onClick={() => setDetailWindow(false)}
-            className="absolute top-0 right-0"
-          >
-            <CloseIcon className="text-dark " />
-          </IconButton>
-          <h1 className="text-dark  text-lg font-bold">
-            Item ID:{itemDetail?.id}
-          </h1>
+        <div className=" p-1 pl-3 sticky top-0 bg-white border-b border-gray-300">
+          <div className="flex flex-row items-center justify-between">
+            <IconButton
+              onClick={() => setDetailWindow(false)}
+              className="absolute top-0 right-0"
+            >
+              <CloseIcon className="text-dark " />
+            </IconButton>
+            <div className="text-dark  text-lg font-bold">
+              Item ID:{itemDetail?.id}
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-10 text-dark px-3 pt-2 pb-7 gap-y-2">
@@ -187,16 +216,20 @@ const ItemDetail = (props: Props) => {
           )}
           <div className="col-span-10 font-semibold">Image:</div>
           <div className="col-span-10 flex justify-center items-center">
-            {itemDetail?.img_url ? (
+            {imageUrl ? (
               isEditDetail ? (
                 <div className="flex flex-col justify-center items-center gap-3 border border-gray-300 p-3">
                   <Image
-                    src={itemDetail?.img_url}
+                    src={imageUrl}
                     alt={itemDetail?.name}
                     width={200}
                     height={200}
                   />
-                  <Button variant="contained" color="error">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => setImageUrl("")}
+                  >
                     Delete Image
                   </Button>
                   <Button variant="contained" color="success">
@@ -204,12 +237,53 @@ const ItemDetail = (props: Props) => {
                   </Button>
                 </div>
               ) : (
-                <Image
-                  src={itemDetail?.img_url}
-                  alt={itemDetail?.name}
-                  width={200}
-                  height={200}
-                />
+                <div>
+                  <Image
+                    src={imageUrl}
+                    alt={itemDetail?.name}
+                    width={200}
+                    height={200}
+                    onClick={handleImageClick}
+                    className="cursor-pointer"
+                  />
+
+                  <Modal open={isModalOpen} onClose={handleClose}>
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "90%",
+                        height: "90%",
+                        bgcolor: "background.paper",
+                        boxShadow: 24,
+                        p: 4,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <IconButton
+                        onClick={handleClose}
+                        sx={{
+                          position: "absolute",
+                          zIndex: 30,
+                          top: 0,
+                          right: 0,
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                      <Image
+                        src={imageUrl}
+                        alt={itemDetail?.name}
+                        layout="fill"
+                        objectFit="contain"
+                      />
+                    </Box>
+                  </Modal>
+                </div>
               )
             ) : isEditDetail ? (
               <div className="flex flex-col justify-center items-center gap-3 border border-gray-300 p-3">
@@ -223,7 +297,11 @@ const ItemDetail = (props: Props) => {
                   onChange={handleFileChange}
                 />
 
-                <Button variant="contained" color="success" onClick={handleUploadClick}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleUploadClick}
+                >
                   Upload Image
                 </Button>
               </div>
