@@ -23,6 +23,7 @@ import Alert from "@mui/material/Alert";
 import updateMin from "../../utils/sql/updateMin";
 import updateInventory from "@/app/utils/sql/updateInventory";
 import generateShopList from "../../utils/sql/generateShopList";
+import AddItem from "../components/AddItem";
 
 type Props = {
   itemList: any[] | null;
@@ -79,6 +80,7 @@ const Item_list = (props: Props) => {
   const [checkedItems, setCheckedItems] = useState<ShoppingItem[]>([]);
   // get all the unique item_category from the itemList
   const itemCategory = itemList?.map((item) => item.item_category);
+  const [isAddItemOpen, setIsAddItemOpen] = useState(false);
   const uniqueItemCategory = itemCategory?.filter(
     (item, index) => itemCategory.indexOf(item) === index
   );
@@ -132,7 +134,13 @@ const Item_list = (props: Props) => {
         setActions(EditActions);
       },
     },
-    { icon: <PlaylistAddIcon color="primary" />, name: `Add${"\u00A0"}Item` },
+    {
+      icon: <PlaylistAddIcon color="primary" />,
+      name: `Add${"\u00A0"}Item`,
+      action: () => {
+        setIsAddItemOpen(true);
+      },
+    },
     {
       icon: <ChecklistIcon color="error" />,
       name: `Generate${"\u00A0"}List`,
@@ -143,6 +151,7 @@ const Item_list = (props: Props) => {
     {
       icon: <FormatListNumberedIcon color="error" />,
       name: `Shopping${"\u00A0"}List`,
+
       action: () => {
         //navigate to the /shoppingList page
         router.push("/shoppinglist");
@@ -481,7 +490,7 @@ const Item_list = (props: Props) => {
           {alertMessage}
         </Alert>
       )}
-      {!isSaving && !isCheckboxes && !detailWindow && (
+      {!isSaving && !isCheckboxes && !detailWindow &&!isAddItemOpen && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
@@ -517,6 +526,8 @@ const Item_list = (props: Props) => {
             isEditing={isEditing}
           />
         )}
+        {isAddItemOpen && <AddItem setIsAddItemOpen={setIsAddItemOpen} />}
+
         {isMinOpen && (
           <MinAmountEditor
             currentMinItem={currentMinItem}

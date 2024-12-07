@@ -3,18 +3,30 @@ import { Button, CircularProgress } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import getShoppingList from "@/app/utils/sql/getShoppingList";
 import { useRouter } from "next/navigation";
+import ItemDetail from "../../private/components/ItemDetail";
 type Props = {};
 
 const ShoppingListPage = (props: Props) => {
   const router = useRouter();
   const [shoppingList, setShoppingList] = useState<any[] | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [shoppingPlace, setShoppingPlace] = useState<string[]>([]);
+  const [detailWindow, setDetailWindow] = useState(false);
+  const [itemDetail, setItemDetail] = useState<any>(null);
 
   const getData = async () => {
     const { success, data, error } = await getShoppingList();
     if (success) {
       if (data) {
         setShoppingList(data);
+
+        //find the unique shopping place
+        let uniqueShoppingPlaces = new Set<string>();
+        data.forEach((item: any) => {
+          uniqueShoppingPlaces.add(item.item_list.shopping_place);
+        });
+
+        setShoppingPlace(Array.from(uniqueShoppingPlaces));
         setIsLoaded(true);
         console.log(data);
       } else {
@@ -29,8 +41,17 @@ const ShoppingListPage = (props: Props) => {
   useEffect(() => {
     getData();
   }, []);
+
+  console.log(shoppingList);
   return (
     <div className="flex flex-col gap-3 p-4 ">
+      {detailWindow && (
+        <ItemDetail
+          itemDetail={itemDetail}
+          setDetailWindow={setDetailWindow}
+          isEditing={false}
+        />
+      )}
       {!isLoaded ? (
         <div className="flex justify-center items-center h-full">
           <CircularProgress color="secondary" />
@@ -38,21 +59,45 @@ const ShoppingListPage = (props: Props) => {
       ) : shoppingList && shoppingList.length > 0 ? (
         <>
           <h2 className="text-xl font-semibold">Shopping List</h2>
+          <div className="grid grid-cols-6  text-lg font-semibold">
+            <div className="col-span-3 pl-3 ">Item</div>
+            <div className="col-span-1">Price</div>
+            <div className="col-span-2">Amount</div>
+          </div>
           <div className="flex flex-col gap-2">
-            {shoppingList.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-row justify-between items-center"
-              >
-                <div className="flex flex-row justify-center items-center gap-1">
-                  <div className="text-lg font-semibold">
-                    {item.item_list.name}
-                  </div>
-                  <div className="text-lg text-gray-300">{item.amount}</div>
-                </div>
+            {shoppingPlace.map((place) => (
+              <div key={place} className="flex flex-col gap-2">
+                <div className="text-lg font-semibold ">{place}</div>
+                {shoppingList.map(
+                  (item: any) =>
+                    item.item_list.shopping_place === place && (
+                      <div
+                        key={item.item_list.id}
+                        className=" grid grid-cols-6 pl-3"
+                      >
+                        <div
+                          className="col-span-3 hover:underline hover:cursor-pointer 
+                     hover:text-[#ff5151] "
+                          onClick={() => {
+                            setDetailWindow(true);
+                            setItemDetail(item.item_list);
+                          }}
+                        >
+                          {item.item_list.name}
+                        </div>
+                        <div className="col-span-1">
+                          {item.item_list.price
+                            ? `$${item.item_list.price}/per`
+                            : ""}
+                        </div>
+                        <div className="col-span-2">{item.amount}</div>
+                      </div>
+                    )
+                )}
               </div>
             ))}
           </div>
+
           <div className="flex justify-center items-center gap-2">
             <Button
               variant="contained"

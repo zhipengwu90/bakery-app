@@ -32,7 +32,7 @@ const Hero = (props: Props) => {
       </div>
 
       <div className="flex flex-row w-full h-full justify-evenly items-center mt-4">
-        <div></div>
+        
         <div className="w-2/5 lg:w-full p-2">
           <Image
             src={Cookies1}
@@ -43,7 +43,7 @@ const Hero = (props: Props) => {
             className="rounded-lg shadow-lg max-h-[80vh] object-cover"
           />
         </div>
-        <div className="w-2/5 lg:w-full p-2">
+        <div className="w-2/5  lg:hidden  p-2">
           <Image
             src={Cookies2}
             alt="Cookies"
