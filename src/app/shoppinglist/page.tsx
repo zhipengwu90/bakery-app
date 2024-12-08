@@ -15,7 +15,9 @@ export default async function ShoppingList() {
   return (
     <div>
       <div>Hello {data.user.email}</div>
-      <ShoppingListPage />
+      <ShoppingListPage
+       user = {data.user}
+      />
     </div>
   );
 }

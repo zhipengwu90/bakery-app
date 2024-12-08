@@ -100,6 +100,7 @@ const Item_list = (props: Props) => {
         if (confirm("您确定要取消吗？所有未保存的更改将丢失。")) {
           setIsEditing(false);
           setActions(menuActions);
+           window.location.reload();
         }
       },
     },
