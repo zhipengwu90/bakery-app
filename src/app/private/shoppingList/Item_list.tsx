@@ -100,7 +100,7 @@ const Item_list = (props: Props) => {
         if (confirm("您确定要取消吗？所有未保存的更改将丢失。")) {
           setIsEditing(false);
           setActions(menuActions);
-           window.location.reload();
+          window.location.reload();
         }
       },
     },
@@ -420,6 +420,7 @@ const Item_list = (props: Props) => {
         await Promise.all(
           checkedItems.map(async (item: any) => {
             const result = await generateShopList(item.id, item.needAmount);
+
             if (!result.success) {
               allSuccessful = false;
               setAlert(true);
@@ -449,6 +450,7 @@ const Item_list = (props: Props) => {
   useEffect(() => {
     if (isCheckboxes) {
       ///loop through itemListCopy and check the item.min_amount - item.current_inventory.total_number, if bigger than 0, add to checkedItems
+
       itemListCopy?.forEach((item) => {
         let needAmount = Math.max(
           0,
@@ -491,7 +493,9 @@ const Item_list = (props: Props) => {
           {alertMessage}
         </Alert>
       )}
-      {!isSaving && !isCheckboxes && !detailWindow &&!isAddItemOpen && (
+
+      <div></div>
+      {!isSaving && !isCheckboxes && !detailWindow && !isAddItemOpen && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
@@ -545,7 +549,7 @@ const Item_list = (props: Props) => {
                 color="primary"
                 onClick={handleShoppingSubmit}
               >
-                Create
+                Create (#{checkedItems.length})
               </Button>
               <Button
                 variant="contained"

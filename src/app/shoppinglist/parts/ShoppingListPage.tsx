@@ -184,7 +184,9 @@ const ShoppingListPage = (props: Props) => {
         </div>
       ) : shoppingList && shoppingList.length > 0 ? (
         <>
-          <h2 className="text-xl font-semibold">Shopping List</h2>
+          <h2 className="text-xl font-semibold">
+            Shopping List (Item#: {shoppingList.length})
+          </h2>
           <div className="grid grid-cols-7  text-lg font-semibold sticky top-20 bg-white opacity-90 place-items-center  ">
             <div className="col-span-1 "></div>
             <div className="col-span-3 pl-3 place-self-start ">Item</div>
