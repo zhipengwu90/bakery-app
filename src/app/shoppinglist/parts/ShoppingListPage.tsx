@@ -1,5 +1,12 @@
 "use client";
-import { Button, CircularProgress } from "@mui/material";
+import {
+  Button,
+  Tooltip,
+  CircularProgress,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import getShoppingList from "@/app/utils/sql/getShoppingList";
 import { useRouter } from "next/navigation";
@@ -9,6 +16,10 @@ import Alert from "@mui/material/Alert";
 import AmountUpdate from "./AmountUpdate";
 import shoppingComplete from "@/app/utils/sql/shoppingComplete";
 import shopping_history from "@/app/utils/sql/shopping_history";
+import HistoryIcon from "@mui/icons-material/History";
+import EditIcon from "@mui/icons-material/Edit";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 type Props = {
   user: any;
 };
@@ -26,6 +37,8 @@ const ShoppingListPage = (props: Props) => {
   const [isError, setIsError] = useState(false);
   const [amountWindow, setAmountWindow] = useState(false);
   const [amountDetail, setAmountDetail] = useState<any>(null);
+  const [isSpecialOpen, setIsSpecialOpen] = useState(false);
+  const [menuActions, setMenuActions] = useState<any[]>([]);
 
   const getData = async () => {
     const { success, data, error } = await getShoppingList();
@@ -62,6 +75,67 @@ const ShoppingListPage = (props: Props) => {
     getData();
   }, []);
 
+  const actions = [
+    {
+      icon: <Inventory2Icon color="warning" />,
+      name: `Go${"\u00A0"}to${"\u00A0"}Inventory`,
+
+      action: () => {
+        router.push("/private");
+      },
+    },
+    {
+      icon: <EditIcon color="success" />,
+      name: `Add${"\u00A0"}Shopping${"\u00A0"}Item`,
+      action: () => {},
+    },
+    {
+      icon: <HistoryIcon color="primary" />,
+      name: `View${"\u00A0"}History`,
+      action: () => {
+        router.push("/shoppingHistory");
+      },
+    },
+
+    {
+      icon: <AssignmentTurnedInIcon color="error" />,
+      name: `Shopping${"\u00A0"}Done`,
+      action: () => {
+        handleComplete();
+      },
+    },
+  ];
+
+  const EmptyListActions = [
+    {
+      icon: <Inventory2Icon color="warning" />,
+      name: `Go${"\u00A0"}to${"\u00A0"}Inventory`,
+
+      action: () => {
+        router.push("/private");
+      },
+    },
+    {
+      icon: <EditIcon color="success" />,
+      name: `Add${"\u00A0"}Shopping${"\u00A0"}Item`,
+      action: () => {},
+    },
+    {
+      icon: <HistoryIcon color="primary" />,
+      name: `View${"\u00A0"}History`,
+      action: () => {
+        router.push("/shoppingHistory");
+      },
+    },
+  ];
+
+  useEffect(() => {
+    if (shoppingList && shoppingList.length > 0) {
+      setMenuActions(actions);
+    } else {
+      setMenuActions(EmptyListActions);
+    }
+  }, [shoppingList]);
   const handleCheck = async (
     item: any,
     event: React.ChangeEvent<HTMLInputElement>
@@ -155,6 +229,27 @@ const ShoppingListPage = (props: Props) => {
   };
   return (
     <div className="flex flex-col gap-3 p-4 ">
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+        onClose={() => setIsSpecialOpen(false)}
+        onOpen={() => setIsSpecialOpen(true)}
+        open={isSpecialOpen}
+      >
+        {menuActions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipOpen
+            tooltipTitle={action.name}
+            onClick={() => {
+              action.action && action.action();
+              setIsSpecialOpen(false);
+            }}
+          />
+        ))}
+      </SpeedDial>
       {alert && (
         <Alert
           className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50"
@@ -252,7 +347,7 @@ const ShoppingListPage = (props: Props) => {
             ))}
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-5">
+          {/* <div className="flex flex-col justify-center items-center gap-5">
             <Button
               variant="contained"
               color="error"
@@ -268,16 +363,22 @@ const ShoppingListPage = (props: Props) => {
             >
               Go to Inventory
             </Button>
-          </div>
+          </div> */}
         </>
       ) : (
-        <>
-          <h2 className="text-xl font-semibold">No Shopping List Found</h2>
-          <p className="mt-2 text-gray-300">
+        <div className=" h-[50vh] flex flex-col justify-center items-center">
+          <h2 className="text-xl font-semibold text-red-500">
+            No Shopping List Found
+          </h2>
+          <p
+            className="
+       
+          mt-2 text-gray-500"
+          >
             It looks like you don't have any items in your shopping list yet.
             Please go to your inventory and generate a list to get started!
           </p>
-          <div className="flex justify-center items-center gap-2">
+          {/* <div className="flex justify-center items-center gap-2">
             <Button
               variant="contained"
               color="primary"
@@ -292,8 +393,8 @@ const ShoppingListPage = (props: Props) => {
             >
               Shopping History
             </Button>
-          </div>
-        </>
+          </div> */}
+        </div>
       )}
     </div>
   );

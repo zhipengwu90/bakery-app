@@ -25,6 +25,8 @@ import updateInventory from "@/app/utils/sql/updateInventory";
 import generateShopList from "../../utils/sql/generateShopList";
 import AddItem from "../components/AddItem";
 
+import deleteOldShopping from "../../utils/sql/deleteOldShopping";
+
 type Props = {
   itemList: any[] | null;
   // itemList: {
@@ -143,7 +145,7 @@ const Item_list = (props: Props) => {
       },
     },
     {
-      icon: <ChecklistIcon color="error" />,
+      icon: <ChecklistIcon color="warning" />,
       name: `Generate${"\u00A0"}List`,
       action: () => {
         setIsCheckboxes(true);
@@ -413,9 +415,11 @@ const Item_list = (props: Props) => {
     const userConfirmed = confirm(
       "创建新的购物清单， 之前创立未完成的将购物清单将会被删除"
     );
+
     if (userConfirmed) {
       if (checkedItems.length > 0) {
         let allSuccessful = true;
+        const deleteOldShoppingResult = await deleteOldShopping();
 
         await Promise.all(
           checkedItems.map(async (item: any) => {
@@ -435,10 +439,14 @@ const Item_list = (props: Props) => {
           })
         );
 
-        if (allSuccessful) {
+        if (allSuccessful && deleteOldShoppingResult.success) {
           setAlert(true);
           setAlertMessage("添加成功, 请前往购物清单查看");
           setIsError(false);
+        } else {
+          setAlert(true);
+          setAlertMessage("添加失败, 请重试");
+          setIsError(true);
         }
       }
     }
@@ -494,7 +502,6 @@ const Item_list = (props: Props) => {
         </Alert>
       )}
 
-      <div></div>
       {!isSaving && !isCheckboxes && !detailWindow && !isAddItemOpen && (
         <SpeedDial
           ariaLabel="SpeedDial basic example"
@@ -546,6 +553,7 @@ const Item_list = (props: Props) => {
             <div className=" fixed bottom-10 left-[50%] translate-x-[-50%] flex flex-row gap-3">
               <Button
                 variant="contained"
+                disabled={checkedItems.length === 0}
                 color="primary"
                 onClick={handleShoppingSubmit}
               >

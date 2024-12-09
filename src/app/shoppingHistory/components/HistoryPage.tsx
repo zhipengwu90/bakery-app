@@ -25,56 +25,65 @@ const HistoryPage = (props: Props) => {
     getData();
   }, []);
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-center text-gray-800 mb-3">
-        Shopping History
-      </h1>
-      {isLoaded ? (
-        <div>
-          <div className="grid grid-cols-4">
-            <div className=" col-span-1">Shopping Date</div>
-            <div className=" col-span-1">Shopping Place</div>
-            <div className=" col-span-1">Total Cost</div>
-            <div className=" col-span-1">Receipt</div>
-          </div>
-
-          {history.length > 0 ? (
-            history.map((item: any) => {
-              ///get the mm/dd/yyyy from the created_at
-              const date = new Date(item.created_at);
-              const month = date.getMonth() + 1;
-              const day = date.getDate();
-              const year = date.getFullYear();
-              const formattedDate = month + "/" + day + "/" + year;
-
-              return (
-                <div key={item.id}>
-                  <div className="grid grid-cols-4">
-                    <div className=" col-span-1">{formattedDate}</div>
-                    <div className=" col-span-1">{item.shopping_place}</div>
-                    <div className=" col-span-1">{item.total_cost}</div>
-                    <div className=" col-span-1">{item.receipt_img}</div>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="flex flex-col items-center justify-center text-lg text-red-600 font-bold h-[80vh]">
-              No shopping history found
+    <div className="p-4 min-h-[60vh] flex flex-col justify-between  ">
+      <div>
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-3">
+          Shopping History
+        </h1>
+        {isLoaded ? (
+          <div>
+            <div className="grid grid-cols-4">
+              <div className=" col-span-1">Date</div>
+              <div className=" col-span-1">Place</div>
+              <div className=" col-span-1">Total Cost</div>
+              <div className=" col-span-1">Receipt</div>
             </div>
-          )}
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
 
-      <div className="flex justify-center items-center gap-2">
+            {history.length > 0 ? (
+              history.map((item: any) => {
+                ///get the mm/dd/yyyy from the created_at
+                const date = new Date(item.created_at);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const year = date.getFullYear();
+                const formattedDate = month + "/" + day + "/" + year;
+
+                return (
+                  <div key={item.id}>
+                    <div className="grid grid-cols-4">
+                      <div className=" col-span-1">{formattedDate}</div>
+                      <div className=" col-span-1">{item.shopping_place}</div>
+                      <div className=" col-span-1">{item.total_cost}</div>
+                      <div className=" col-span-1">{item.receipt_img}</div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="flex flex-col items-center justify-center text-lg text-red-600 font-bold h-[80vh]">
+                No shopping history found
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+
+      <div className="flex flex-col justify-center items-center gap-2">
         <Button
           variant="contained"
-          color="primary"
+          color="success"
           onClick={() => router.push("/private")}
         >
           Go to Inventory
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => router.push("/shoppinglist")}
+        >
+          Shopping List
         </Button>
       </div>
     </div>

@@ -18,6 +18,8 @@ import getShoppingPlace from "../../utils/sql/getShoppingPlace";
 import uploadItemImage from "../../utils/sql/uploadItemImage";
 import saveItemDetail from "../../utils/sql/saveItemDetail";
 import deleteItem from "../../utils/sql/deleteItem";
+import BackspaceIcon from '@mui/icons-material/Backspace';
+
 type Props = {
   itemDetail: any;
   setDetailWindow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -304,20 +306,21 @@ const ItemDetail = (props: Props) => {
           <div className="col-span-10 flex justify-center items-center">
             {imageUrl ? (
               isEditDetail ? (
-                <div className="flex flex-col justify-center items-center gap-3 border border-gray-300 p-3">
+                <div className="flex flex-col relative justify-center items-center gap-3 border border-gray-300 p-3">
                   <Image
                     src={imageUrl}
                     alt={itemDetail?.name}
                     width={200}
                     height={200}
                   />
-                  <Button
-                    variant="contained"
+                  <IconButton
+                    className="absolute top-1 right-2   bg-white opacity-90 hover:bg-white"
                     color="error"
+                    
                     onClick={() => setImageUrl("")}
                   >
-                    Delete Image
-                  </Button>
+                    <BackspaceIcon fontSize="medium" />
+                  </IconButton>
                 </div>
               ) : (
                 <div>
