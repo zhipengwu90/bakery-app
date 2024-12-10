@@ -16,7 +16,7 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import HistoryIcon from "@mui/icons-material/History";
 import ItemDetail from "../components/ItemDetail";
 import MinAmountEditor from "../components/MinAmountEditor";
 import Alert from "@mui/material/Alert";
@@ -108,26 +108,6 @@ const Item_list = (props: Props) => {
     },
   ];
 
-  //   {
-  //     icon: <CloudDoneIcon color="primary" />,
-  //     name: "Complete",
-  //     action: () => {
-  //       if (confirm("您确定要完成吗？")) {
-  //         setActions(menuActions);
-  //         setIsShoppingList(false);
-  //       }
-  //     },
-  //   },
-  //   {
-  //     icon: <CancelIcon color="error" />,
-  //     name: `Go${"\u00A0"}Back`,
-  //     action: () => {
-  //       setActions(menuActions);
-  //       setIsShoppingList(false);
-  //     },
-  //   },
-  // ];
-
   const menuActions = [
     {
       icon: <EditIcon color="success" />,
@@ -158,6 +138,13 @@ const Item_list = (props: Props) => {
       action: () => {
         //navigate to the /shoppingList page
         router.push("/shoppinglist");
+      },
+    },
+    {
+      icon: <HistoryIcon color="primary" />,
+      name: `View${"\u00A0"}History`,
+      action: () => {
+        router.push("/shoppingHistory");
       },
     },
   ];

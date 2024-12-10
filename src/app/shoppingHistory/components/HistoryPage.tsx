@@ -2,13 +2,22 @@
 import React, { useEffect, useState } from "react";
 import getHistory from "@/app/utils/sql/getHistory";
 import Image from "next/image";
-import { Button } from "@mui/material";
+import { Backdrop, Button, CircularProgress, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import MoneyOffIcon from "@mui/icons-material/MoneyOff";
+import DoDisturbAltIcon from "@mui/icons-material/DoDisturbAlt";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import ItemDetail from "./ItemDetail";
+import DoneIcon from '@mui/icons-material/Done';
+
 type Props = {};
 
 const HistoryPage = (props: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [history, setHistory] = useState<any>([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [itemDetails, setItemDetails] = useState<any>([]);
 
   const router = useRouter();
 
@@ -25,18 +34,23 @@ const HistoryPage = (props: Props) => {
     getData();
   }, []);
   return (
-    <div className="p-4 min-h-[60vh] flex flex-col justify-between  ">
+    <div className="p-4 min-h-[60vh] ">
+      {showDetails && (
+        <ItemDetail setShowDetails={setShowDetails} itemDetails={itemDetails} />
+      )}
+
       <div>
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-3">
           Shopping History
         </h1>
         {isLoaded ? (
           <div>
-            <div className="grid grid-cols-4">
-              <div className=" col-span-1">Date</div>
-              <div className=" col-span-1">Place</div>
-              <div className=" col-span-1">Total Cost</div>
-              <div className=" col-span-1">Receipt</div>
+            <div className="grid grid-cols-8 place-items-center">
+              <div className=" col-span-2">Date</div>
+              <div className=" col-span-2">Place</div>
+              <div className=" col-span-1">Cost</div>
+              <div className=" col-span-1">Paid?</div>
+              <div className=" col-span-2">ID</div>
             </div>
 
             {history.length > 0 ? (
@@ -48,13 +62,31 @@ const HistoryPage = (props: Props) => {
                 const year = date.getFullYear();
                 const formattedDate = month + "/" + day + "/" + year;
 
+                //trim the id after -
+                const id = item.shopping_id;
+                const trimId = id.split("-")[0];
+
                 return (
-                  <div key={item.id}>
-                    <div className="grid grid-cols-4">
-                      <div className=" col-span-1">{formattedDate}</div>
-                      <div className=" col-span-1">{item.shopping_place}</div>
+                  <div
+                    key={item.id}
+                    className="border border-gray-300 rounded-lg p-2 my-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => {
+                      setShowDetails(!showDetails);
+                      setItemDetails(item);
+                    }}
+                  >
+                    <div className="grid grid-cols-8 place-items-center">
+                      <div className=" col-span-2">{formattedDate}</div>
+                      <div className=" col-span-2">{item.shopping_place}</div>
                       <div className=" col-span-1">{item.total_cost}</div>
-                      <div className=" col-span-1">{item.receipt_img}</div>
+                      <div className=" col-span-1">
+                        {item.paid ? (
+                          <DoneIcon  color="success" />
+                        ) : (
+                          <DoDisturbAltIcon fontSize="small" color="error" />
+                        )}
+                      </div>
+                      <div className=" col-span-2">{trimId}</div>
                     </div>
                   </div>
                 );
@@ -70,7 +102,7 @@ const HistoryPage = (props: Props) => {
         )}
       </div>
 
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col justify-center items-center gap-2 mt-14">
         <Button
           variant="contained"
           color="success"
