@@ -40,6 +40,8 @@ const ItemDetail = (props: Props) => {
   const [alertMessage, setAlertMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
+  console.log("itemDetail", itemDetail);
+
   const handleImageClick = () => {
     setIsModalOpen(true);
   };
@@ -197,12 +199,8 @@ const ItemDetail = (props: Props) => {
         className="fixed inset-0 bg-black bg-opacity-50 z-10"
         onClick={() => setDetailWindow(false)}
       ></div>
-      <div
-        className="fixed top-[53%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-4/5 bg-white  z-10 rounded-lg shadow-xl  overflow-y-auto
-     
-      "
-      >
-        <div className=" sticky top-0 right-0">
+      <div className="fixed  top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg shadow-md  overflow-y-auto">
+        <div className=" sticky p-1 pl-3  top-0 right-0 ">
           <IconButton
             onClick={() => setDetailWindow(false)}
             className="absolute top-0 right-0"
@@ -211,7 +209,7 @@ const ItemDetail = (props: Props) => {
           </IconButton>
         </div>
 
-        <div className="grid grid-cols-10 text-dark px-2 pt-8 gap-y-2">
+        <div className="grid grid-cols-10 text-dark px-3 pt-5  gap-y-2">
           {isEditing && (
             <Alert
               className="col-span-10 flex justify-center items-center"
@@ -438,20 +436,6 @@ const ItemDetail = (props: Props) => {
                 Delete
               </Button> */}
             </div>
-            <IconButton
-              size="large"
-              color="error"
-              disabled={isEditing}
-              onClick={() => {
-                if (
-                  window.confirm("Are you sure you want to delete this item?")
-                ) {
-                  handleDelete();
-                }
-              }}
-            >
-              <DeleteForeverIcon fontSize="large" />
-            </IconButton>
           </div>
         </div>
       </div>

@@ -52,7 +52,7 @@ const ItemDetail = (props: Props) => {
         className="z-20"
         onClick={() => setShowDetails(false)}
       ></Backdrop>
-      <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/5 bg-white  z-30 rounded-lg shadow-md  overflow-y-auto">
+      <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5  bg-white  z-30 rounded-lg shadow-md  overflow-y-auto flex justify-center">
         {alert && (
           <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <Alert severity={error ? "error" : "success"}>{alertMessage}</Alert>

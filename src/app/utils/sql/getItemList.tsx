@@ -4,12 +4,8 @@ import { createClient } from "../supabase/client";
 const supabase = createClient();
 
 const getShoppingList = async () => {
-  const { data , error } = await supabase.from("shopping_list").select(
-    `*,
-        item_list (
-            *
-        )
-        `
+  const { data , error } = await supabase.from("item_list").select(
+    `id, name `
   );
 
   if (error) {

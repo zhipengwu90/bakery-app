@@ -14,10 +14,12 @@ import Image from "next/image";
 import addNewItem from "../../utils/sql/addNewItem";
 type Props = {
   setIsAddItemOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  className?: string;
+  fetchData: () => void;
 };
 
-const AddItem = (props: Props) => {
-  const { setIsAddItemOpen } = props;
+const AddNewItem = (props: Props) => {
+  const { setIsAddItemOpen, className, fetchData } = props;
 
   const [itemCategory, setItemCategory] = useState<any | null>();
   const [price, setPrice] = useState<number | string>("");
@@ -106,7 +108,7 @@ const AddItem = (props: Props) => {
       setIsError(true);
       setAlert(true);
       setAlertMessage("Error adding item");
-      console.error("Error adding item:", error);
+
       setIsUploading(false);
       return;
     } else {
@@ -116,13 +118,13 @@ const AddItem = (props: Props) => {
 
       setTimeout(() => {
         setIsAddItemOpen(false);
-        window.location.reload();
+        fetchData();
       }, 1000);
     }
   };
 
   return (
-    <>
+    <div className={className}>
       <Backdrop sx={{ color: "#fff" }} open={isUploading} className="z-50">
         <CircularProgress color="success" />
       </Backdrop>
@@ -142,10 +144,10 @@ const AddItem = (props: Props) => {
         </Alert>
       )}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-"
+        className="fixed inset-0 bg-black bg-opacity-50 z-30"
         onClick={() => setIsAddItemOpen(false)}
       ></div>
-      <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-10 rounded-lg shadow-md  overflow-y-auto">
+      <div className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]  w-4/5 h-3/4 bg-white  z-30 rounded-lg shadow-md  overflow-y-auto">
         <div className="sticky top-0 right-0 bg-white ">
           <IconButton
             onClick={() => setIsAddItemOpen(false)}
@@ -262,8 +264,8 @@ const AddItem = (props: Props) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default AddItem;
+export default AddNewItem;

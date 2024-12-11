@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import getShoppingList from "@/app/utils/sql/getShoppingList";
 import { useRouter } from "next/navigation";
-import ItemDetail from "../../private/components/ItemDetail";
+import ItemDetail from "../parts/ItemDetail";
 import shoppingCheck from "@/app/utils/sql/shoppingCheck";
 import Alert from "@mui/material/Alert";
 import AmountUpdate from "./AmountUpdate";
@@ -20,6 +20,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import EditIcon from "@mui/icons-material/Edit";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import AddItem from "./AddItem";
 type Props = {
   user: any;
 };
@@ -39,6 +40,8 @@ const ShoppingListPage = (props: Props) => {
   const [amountDetail, setAmountDetail] = useState<any>(null);
   const [isSpecialOpen, setIsSpecialOpen] = useState(false);
   const [menuActions, setMenuActions] = useState<any[]>([]);
+
+  const [isAddItem, setIsAddItem] = useState(false);
 
   const getData = async () => {
     const { success, data, error } = await getShoppingList();
@@ -87,7 +90,9 @@ const ShoppingListPage = (props: Props) => {
     {
       icon: <EditIcon color="success" />,
       name: `Add${"\u00A0"}Shopping${"\u00A0"}Item`,
-      action: () => {},
+      action: () => {
+        setIsAddItem(true);
+      },
     },
     {
       icon: <HistoryIcon color="primary" />,
@@ -118,7 +123,9 @@ const ShoppingListPage = (props: Props) => {
     {
       icon: <EditIcon color="success" />,
       name: `Add${"\u00A0"}Shopping${"\u00A0"}Item`,
-      action: () => {},
+      action: () => {
+        setIsAddItem(true);
+      },
     },
     {
       icon: <HistoryIcon color="primary" />,
@@ -250,6 +257,9 @@ const ShoppingListPage = (props: Props) => {
           />
         ))}
       </SpeedDial>
+
+      {isAddItem && <AddItem setIsAddItem={setIsAddItem} />}
+
       {alert && (
         <Alert
           className="fixed top-16 left-1/2 transform -translate-x-1/2 z-50"
@@ -371,9 +381,7 @@ const ShoppingListPage = (props: Props) => {
             No Shopping List Found
           </h2>
           <p
-            className="
-       
-          mt-2 text-gray-500"
+            className="  mt-2 text-gray-500"
           >
             It looks like you don't have any items in your shopping list yet.
             Please go to your inventory and generate a list to get started!

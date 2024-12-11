@@ -14,10 +14,8 @@ export default async function ShoppingList() {
 
   return (
     <div>
-      <div>Hello {data.user.email}</div>
-      <ShoppingListPage
-       user = {data.user}
-      />
+      <div className="px-32 lg:px-4 ">Hello {data.user.email}</div>
+      <ShoppingListPage user={data.user} />
     </div>
   );
 }

@@ -16,6 +16,7 @@
     "@mui/styles": "^6.1.9",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
+    "browser-image-compression": "^2.0.2",
     "embla-carousel-react": "^8.5.1",
     "motion": "^11.11.17",
     "next": "15.0.3",

@@ -1,22 +1,29 @@
+import imageCompression from "browser-image-compression";
 import { createClient } from "../supabase/client";
 
 const supabase = createClient();
+
 const uploadItemImage = async (file: File, name: string) => {
-  //remove the space and replace with underscore
-  let newName = name.replace(/\s/g, "_");
+  try {
+    const options = {
+      maxSizeMB: 0.5,
+      maxWidthOrHeight: 500,
+      useWebWorker: true,
+    };
+    const compressedFile = await imageCompression(file, options);
 
-  const fileName = `${newName}_${Date.now()}`;
+    let newName = name.replace(/\s/g, "_");
+    const fileName = `${newName}_${Date.now()}`;
 
-  const { data, error } = await supabase.storage
-    .from("item_photo")
-    .upload(fileName, file);
+    const { data, error } = await supabase.storage
+      .from("item_photo")
+      .upload(fileName, compressedFile);
 
-  if (error) {
-    console.error("Error uploading image:", error.message);
-    return { success: false, error: error.message };
-  } else {
+    if (error) {
+      console.error("Error uploading image:", error.message);
+      return { success: false, error: error.message };
+    }
 
-    // Get the public URL of the uploaded file
     const {
       data: { publicUrl },
     } = supabase.storage.from("item_photo").getPublicUrl(fileName);
@@ -25,8 +32,12 @@ const uploadItemImage = async (file: File, name: string) => {
       console.error("Error getting public URL");
       return { success: false, error: "Error getting public URL" };
     }
+
     console.log("Public URL:", publicUrl);
     return { success: true, url: publicUrl };
+  } catch (err) {
+    console.error("Compression error:", err);
+    return { success: false, error: "Compression failed" };
   }
 };
 

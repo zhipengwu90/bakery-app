@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "../utils/supabase/server";
-import DataPage from "./shoppingList/data";
+import DataPage from "./shoppingList/DataPage";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
@@ -13,7 +13,7 @@ export default async function PrivatePage() {
 
   return (
     <div>
-      <div className="px-2">Hello {data.user.email}</div>
+      <div className="px-32 lg:px-4 ">Hello {data.user.email}</div>
 
       <DataPage />
     </div>
