@@ -151,7 +151,7 @@ const NavBar: React.FC = () => {
       {/* phone icon on p */}
       <nav className=" item-center justify-center gap-5 hidden lg:flex">
         <motion.a
-          href="tel:2505860377"
+          href="tel:2509051123"
           target={"_blank"}
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.9 }}
@@ -192,12 +192,12 @@ const NavBar: React.FC = () => {
           </motion.a>
 
           <motion.a
-            href="tel:2505860377"
+            href="tel:2509051123"
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.9 }}
             className="self-center "
           >
-            <div> 250-586-0377</div>
+            <div> 250-905-1123</div>
           </motion.a>
         </nav>
       </div>
