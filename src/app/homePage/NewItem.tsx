@@ -5,7 +5,7 @@ import ImageListItem from "@mui/material/ImageListItem";
 import Modal from "@mui/material/Modal";
 import Image from "next/image";
 import { useMediaQuery } from "@mui/material";
-import NewYearCake from "../../../public/newItems/newYearCake.jpg";
+import newCake from "../../../public/newItems/newCake.jpg";
 import newYearBg from "../../../public/newItems/newYearBg.png";
 import snake from "../../../public/newItems/snake.png";
 
@@ -26,7 +26,7 @@ const NewItem = (props: Props) => {
       </div>
       <div className="grid grid-cols-2 gap-4 md:grid-cols-1 ">
         <Image
-          src={NewYearCake}
+          src={newCake}
           alt="newYearCake"
           className="rounded-lg shadow-lg h-full"
         />
