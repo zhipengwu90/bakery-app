@@ -47,8 +47,7 @@ const NewItem = (props: Props) => {
               Celebrate the Lunar New Year with Brazen Poppy’s limited-edition
               6-inch cakes! Available in Sea Salt Oreo and Seasonal Fruit
               flavors for $45, these cakes are perfect for adding sweetness to
-              your family gatherings or reunions with friends. Special delivery
-              is available on the 28th and 29th of the Lunar New Year.
+              your family gatherings or reunions with friends.
             </p>
 
             <p className="font-bold ">
