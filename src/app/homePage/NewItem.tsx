@@ -9,7 +9,6 @@ import newCake from "../../../public/newItems/newCake.jpg";
 import newYearBg from "../../../public/newItems/newYearBg.png";
 import snake from "../../../public/newItems/snake.png";
 
-
 type Props = {};
 
 const NewItem = (props: Props) => {
