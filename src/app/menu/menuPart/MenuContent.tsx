@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import menu2 from "../../../../public/menu/menu2.jpg";
+import menu2 from "../../../../public/menu/menu1.png";
 import menu from "../../../../public/menu/menu1.jpg";
 import breakfast from "../../../../public/foodPhotos/breakfast.jpeg";
 import emblaCarousel from "embla-carousel";
