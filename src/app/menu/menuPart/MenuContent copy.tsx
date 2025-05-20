@@ -9,12 +9,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import MenuDetail from "./MenuDetail";
-import AllDay from "./AllDay";
-import Breakfast from "./Breakfast";
-import Drink from "./Drink";
-import MenuItem from "./MenuItem";
-import SaladSoup from "./SaladSoup";
+
 type Props = {};
 
 const MenuContent = (props: Props) => {
@@ -22,67 +17,39 @@ const MenuContent = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const menuItems = ["ALL-DAY", "BREAKFAST", "DRINKS"];
-  // const emblaRef = useRef(null);
-  // useEffect(() => {
-  //   if (emblaRef.current) {
-  //     const embla = emblaCarousel(emblaRef.current, { loop: true });
-  //     return () => embla.destroy();
-  //   }
-  // }, []);
-
+  const emblaRef = useRef(null);
   useEffect(() => {
-    window.scrollTo({
-      top: 20,
-      behavior: "smooth", // Smooth scrolling
-    });
-  }, [selectedIndex]);
+    if (emblaRef.current) {
+      const embla = emblaCarousel(emblaRef.current, { loop: true });
+      return () => embla.destroy();
+    }
+  }, []);
 
-  // const openModal = (imageSrc: string) => {
-  //   setSelectedImage(imageSrc);
-  //   setIsModalOpen(true);
-  // };
+  const openModal = (imageSrc: string) => {
+    setSelectedImage(imageSrc);
+    setIsModalOpen(true);
+  };
 
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  //   setSelectedImage(null);
-  // };
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   return (
     <div className="px-32 lg:px-4 my-3">
-      <div className="flex flex-row items-center justify-center w-full my-8 sticky top-20 bg-white z-10  bg-opacity-90 pb-3">
+      <div className="flex flex-row items-center justify-center w-full my-8">
         <div className="flex-grow border-t border-red-500"></div>
-
-        <MenuItem
-          label="PLATES"
-          isSelected={selectedIndex === 0}
-          onClick={() => setSelectedIndex(0)}
-        />
-        <MenuItem
-          label="SALAD/SOUP"
-          isSelected={selectedIndex === 1}
-          onClick={() => setSelectedIndex(1)}
-        />
-        <MenuItem
-          label="DRINKS"
-          isSelected={selectedIndex === 2}
-          onClick={() => setSelectedIndex(2)}
-        />
+        <h1 className="px-4 text-center text-2xl font-bold text-red-500">
+          Our Menu
+        </h1>
         <div className="flex-grow border-t border-red-500"></div>
       </div>
 
-      {/* <p className="text-lg text-gray-700 mb-6 text-center font-semibold">
+      <p className="text-lg text-gray-700 mb-6 text-center font-semibold">
         Breakfast Skillets, Breakfast Sandwiches, Daily Soups, Sandwiches Made
         to Order, Hamburgers, Gluten Free Options
-      </p> */}
-      <div className=" ">
-        {selectedIndex === 0 && <AllDay />}
-        {selectedIndex === 1 && <SaladSoup />}
-        {selectedIndex === 2 && <Drink />}
-      </div>
+      </p>
 
-      {/* <MenuDetail /> */}
-      {/* 
       <section className="embla">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
@@ -185,7 +152,7 @@ const MenuContent = (props: Props) => {
             />
           )}
         </Box>
-      </Modal> */}
+      </Modal>
     </div>
   );
 };

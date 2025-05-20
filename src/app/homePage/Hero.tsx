@@ -5,22 +5,23 @@ import Cookies2 from "../../../public/image/cookies2.jpg";
 import { Button } from "@mui/material";
 import Link from "next/link";
 
-
 //import  all images from public/foodPhotos folder
-
 
 type Props = {};
 
 const Hero = (props: Props) => {
   return (
     <div className="relative w-full h-[80vh] bg-gray-100 flex flex-col justify-center items-center">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-700 opacity-95 rounded-full w-[40vh] h-[40vh] flex flex-col items-center justify-center text-white text-center p-4 gap-3">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-700 opacity-95 rounded-full w-[44vh] h-[44vh] flex flex-col items-center justify-center text-white text-center p-4 gap-3">
         <h1 className="text-3xl font-bold">Brazen Poppy Bakery</h1>
-        <p className="mt-2">
+        {/* <p className="mt-2">
           Visit us for breakfast or lunch. We offer daily soups, freshly baked
           bread for sandwiches, coffees, teas & fresh baked goods.
-        </p>
+        </p> */}
 
+        <p className="mt-2">
+          Join us for breakfast or lunch! Enjoy our <span className="font-bold">outstanding</span> coffee, <span className="font-bold">fresh-baked</span> bread for sandwiches, and <span className="font-bold">oven-fresh</span> pastries.
+        </p>
         <Button
           variant="contained"
           color="secondary"
@@ -32,7 +33,6 @@ const Hero = (props: Props) => {
       </div>
 
       <div className="flex flex-row w-full h-full justify-evenly items-center mt-4">
-        
         <div className="w-2/5 lg:w-full p-2">
           <Image
             src={Cookies1}

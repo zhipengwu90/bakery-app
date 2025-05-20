@@ -1,0 +1,244 @@
+{
+  "coffeeTea": [
+    {
+      "name": "Drip Coffee",
+      "description": "",
+      "priceM": 3.0,
+      "priceL": 3.5,
+      "img": ""
+    },
+    {
+      "name": "Espresso",
+      "description": "",
+      "priceM": 3.75,
+      "priceL": null,
+      "img": ""
+    },
+
+    {
+      "name": "Tea",
+      "description": "",
+      "priceM": 3.0,
+      "priceL": null,
+      "img": ""
+    },
+    {
+      "name": "Canadiano",
+      "description": "",
+      "priceM": 3.85,
+      "priceL": 4.75,
+      "img": ""
+    },
+    {
+      "name": "Cappuccino",
+      "description": "",
+      "priceM": 4.85,
+      "priceL": 5.35,
+      "img": ""
+    },
+    {
+      "name": "Latte",
+      "description": "",
+      "priceM": 4.85,
+      "priceL": 5.35,
+      "img": ""
+    },
+    {
+      "name": "Chai Latte",
+      "description": "",
+      "priceM": 5.25,
+      "priceL": 5.75,
+      "img": ""
+    },
+    {
+      "name": "London Fog",
+      "description": "",
+      "priceM": 5.25,
+      "priceL": 5.75,
+      "img": ""
+    },
+    {
+      "name": "Hot Chocolate",
+      "description": "",
+      "priceM": 4.25,
+      "priceL": 4.75,
+      "img": ""
+    },
+    {
+      "name": "Matcha Latte",
+      "description": "",
+      "priceM": 5.85,
+      "priceL": 6.5,
+      "img": ""
+    },
+    {
+      "name": "Mocha",
+      "description": "",
+      "priceM": 5.25,
+      "priceL": 5.75,
+      "img": ""
+    },
+    {
+      "name": "Steamers",
+      "description": "",
+      "priceM": 3.5,
+      "priceL": 4.0,
+      "img": ""
+    }
+  ],
+
+  "featureDrink": [
+    {
+      "name": "Lemonade",
+      "description": "",
+      "price": 3.25,
+      "img": ""
+    },
+    {
+      "name": "Dirty",
+      "description": "",
+      "price": 4.0,
+      "img": ""
+    },
+    {
+      "name": "Espresso Sunrise",
+      "description": "",
+      "price": 5.25,
+      "img": ""
+    },
+
+    {
+      "name": "Matcha Strawberry",
+      "description": "",
+      "price": 7.25,
+      "img": ""
+    }
+  ],
+
+  "sandwiches": [
+    {
+      "name": "MONTE CRISTO",
+      "description": "Ham & chicken, MJ cheese, egg-dipped toast, icing sugar on top, cranberry jam",
+      "price": 13.65,
+      "img": "Sandwich.jpg"
+    },
+    {
+      "name": "REUBEN",
+      "description": "Rye bread, corned beef, Swiss cheese, sauerkraut",
+      "price": 13.65,
+      "img": ""
+    },
+    {
+      "name": "BREAKFAST SANDWICH",
+      "description": "Ham, bacon, or sausage with egg, cheese, lettuce, tomato, Bun",
+      "price": 10.5,
+      "img": ""
+    },
+    {
+      "name": "CUSTOM SANDWICH",
+      "description": "Choice of bread, protein, toppings, and sauces",
+      "price": 11.55,
+      "img": ""
+    },
+    {
+      "name": "CHEESEBURGER",
+      "description": "Beef, onion, cheese, lettuce, tomato, pickles, bun",
+      "price": 13.65,
+      "img": ""
+    },
+    {
+      "name": "BLT",
+      "description": "Bacon, Lettuce, and Tomato",
+      "price": 10.5,
+      "img": ""
+    }
+  ],
+  "breakfast": [
+    {
+      "name": "SKILLET",
+      "time": " 11:30 AM",
+      "description": "Ham, bacon, or sausage with hashbrowns, two eggs, cheese, tomato, green onions",
+      "price": 16.75,
+      "img": ""
+    },
+    {
+      "name": "TWO EGGS BREAKFAST",
+      "time": " 11:30 AM",
+      "description": "Two eggs, Bacon, ham or sausage, harsh brown or 1pc toast",
+      "price": 11,
+      "img": ""
+    }
+  ],
+  "others": [
+    {
+      "name": "AVOCADO TOAST",
+      "description": "Topped with mixed seeds",
+      "price": 10.5,
+      "img": ""
+    },
+    {
+      "name": "FRENCH TOAST",
+      "description": "(OR+$2.00 for Cinnamon Bun French Toast)",
+      "price": 8.5,
+      "img": ""
+    },
+    { "name": "GRILLED CHEESE", "description": "", "price": 9, "img": "" },
+    {
+      "name": "SOFT TACO",
+      "description": "Chicken or beef (+$2.00 for shrimp)",
+      "price": 9,
+      "img": ""
+    },
+    {
+      "name": "CHILI",
+      "description": "Ground beef",
+      "price": 13.65,
+      "img": ""
+    },
+    {
+      "name": "BAGEL OR TOAST + JAM",
+      "description": "",
+      "price": 3.5,
+      "img": ""
+    }
+  ],
+  "salad": [
+    {
+      "name": "Garden Salad",
+      "description": "",
+      "priceM": 8.0,
+      "priceL": 15.0,
+      "img": ""
+    },
+    {
+      "name": "Caesar Salad",
+      "description": "",
+      "priceM": 8.0,
+      "priceL": 15.0,
+      "img": ""
+    },
+    {
+      "name": "Greek Salad",
+      "description": "",
+      "priceM": 8.0,
+      "priceL": 15.0,
+      "img": ""
+    },
+    {
+      "name": "Chef’s Cobb Salad",
+      "description": "",
+      "priceM": 9.0,
+      "priceL": 17.0,
+      "img": ""
+    }
+  ],
+  "soup": [
+    {
+      "name": "Soup of the Day",
+      "description": "",
+      "priceM": 6,
+      "priceL": 8,
+      "img": ""
+    }
+  ]
+}
