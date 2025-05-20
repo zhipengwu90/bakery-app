@@ -4,12 +4,11 @@ type Props = {};
 import menu from "../menu.json";
 
 const SaladSoup = (props: Props) => {
-  const drinks = menu.drinks;
   const salad = menu.salad;
   const soup = menu.soup;
 
   return (
-    <div className="min-h-screen"> 
+    <div className="min-h-screen">
       <div className="mt-4">
         <h1 className="text-3xl text-green-700 font-bold drop-shadow-lg mt-10">
           SALAD
