@@ -66,7 +66,7 @@ const AboutContent = (props: Props) => {
               </tr>
               <tr>
                 <td className="pr-4">Saturday</td>
-                <td>9 a.m. – 4 p.m.</td>
+                <td>9 a.m. – 3 p.m.</td>
               </tr>
               <tr>
                 <td className="pr-4">Sunday</td>

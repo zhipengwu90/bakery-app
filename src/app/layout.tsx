@@ -16,11 +16,60 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Brazen Poppy Bakery",
+  title: "Brazen Poppy Bakery - Fresh Baked Goods & Coffee in Parksville, BC",
   description:
-    "Offering home made sandwiches with freshly baked bread, home made soup, freshly baked goods including our poppy seed rolls and coffee, Bakery Cafe in Parksville offering breakfast and lunch items.",
-};
+    "Award-winning bakery cafe in Parksville, BC offering homemade sandwiches with freshly baked bread, homemade soup, signature poppy seed rolls, and premium coffee. Daily breakfast and lunch specials.",
+  keywords: [
+    "bakery Parksville",
+    "cafe Parksville BC",
+    "fresh bread",
+    "homemade sandwiches",
+    "poppy seed rolls",
+    "coffee shop",
+    "breakfast Parksville",
+    "lunch Parksville",
+    "homemade soup",
+    "fresh baked goods",
+    "local bakery Vancouver Island",
+  ],
+  authors: [{ name: "Brazen Poppy Bakery" }],
+  creator: "Brazen Poppy Bakery",
+  publisher: "Brazen Poppy Bakery",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "Brazen Poppy Bakery - Fresh Baked Goods & Coffee in Parksville, BC",
+    description:
+      "Award-winning bakery cafe in Parksville, BC offering homemade sandwiches with freshly baked bread, homemade soup, signature poppy seed rolls, and premium coffee.",
+    url: "https://brazenpoppy.ca",
+    siteName: "Brazen Poppy Bakery",
+    images: [
+      {
+        url: "https://lh3.googleusercontent.com/p/AF1QipOsp3wSjL8xuybkzCalbYo1NcXOBYLGi6sOFRcQ=s1360-w1360-h1020",
+        width: 1200,
+        height: 630,
+        alt: "Brazen Poppy Bakery storefront in Parksville, BC",
+      },
+    ],
+    locale: "en_CA",
+    type: "website",
+  },
 
+  other: {
+    "geo.region": "CA-BC",
+    "geo.placename": "Parksville",
+    "geo.position": "49.3175;-124.3139", // Approximate coordinates for Parksville, BC
+  },
+};
 export default function RootLayout({
   children,
 }: Readonly<{
