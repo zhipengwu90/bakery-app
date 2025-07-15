@@ -15,6 +15,20 @@ import { usePathname } from "next/navigation";
 
 const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // Add scroll event listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50); // Change background after scrolling 50px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -32,17 +46,20 @@ const NavBar: React.FC = () => {
     className?: string;
     onToggle: () => void;
   }
-  const pathname = usePathname();
 
   const CustomLink: React.FC<CustomLinkProps> = ({
     href,
     title,
     className,
   }) => {
+    const textColor = isHomePage && !isScrolled ? "text-white" : "text-dark";
+    const hoverColor =
+      isHomePage && !isScrolled ? "hover:text-red-300" : "hover:text-red-500";
+
     return (
       <Link
         href={href}
-        className={`${className} relative group hover:text-red-500`}
+        className={`${className} relative group ${textColor} ${hoverColor} transition-colors duration-300`}
       >
         {title}
 
@@ -122,24 +139,36 @@ const NavBar: React.FC = () => {
     </motion.div>
   );
 
+  // Dynamic styles based on home page and scroll state
+  const headerTextColor =
+    isHomePage && !isScrolled ? "text-white" : "text-dark";
+  const hamburgerColor = isHomePage && !isScrolled ? "bg-white" : "bg-dark";
+  const phoneTextColor = isHomePage && !isScrolled ? "text-white" : "text-dark";
+  const phoneIconColor = isHomePage && !isScrolled ? "#ffffff" : "#000000";
   return (
-    <header className="sticky z-50 top-0 w-full px-32 py-7  xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6    font-semibold text-lg flex items-center justify-between text-dark bg-white  bg-opacity-90">
+    <header
+      className={`sticky z-50 top-0 w-full px-32 py-5 xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6 font-semibold text-lg flex items-center justify-between ${headerTextColor} transition-all duration-300 ease-in-out ${
+        isScrolled
+          ? "bg-white shadow-lg backdrop-blur-sm opacity-90"
+          : "bg-transparent"
+      }`}
+    >
       <button
         className="flex-col justify-center items-center hidden lg:flex"
         onClick={handleToggle}
       >
         <span
-          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
+          className={`${hamburgerColor} block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
             isOpen ? "rotate-45 translate-y-1" : "-translate-y-0.5"
           }`}
         ></span>
         <span
-          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
+          className={`${hamburgerColor} block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
             isOpen ? "opacity-0" : "opacity-100"
           }`}
         ></span>
         <span
-          className={`bg-dark block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
+          className={`${hamburgerColor} block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm  ${
             isOpen ? "-rotate-45 -translate-y-1" : "translate-y-0.5"
           }`}
         ></span>
@@ -148,17 +177,17 @@ const NavBar: React.FC = () => {
       <div className="absolute left-[50%] top-2 lg:top-0 translate-x-[-50%]">
         <Logo />
       </div>
-      {/* phone icon on p */}
+      {/* phone icon on mobile */}
       <nav className=" item-center justify-center gap-5 hidden lg:flex">
         <motion.a
           href="tel:2509051123"
           target={"_blank"}
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.9 }}
-          className="w-6 h-6"
+          className={`w-6 h-6 ${phoneTextColor} transition-colors duration-300`}
           onClick={() => setIsOpen(false)}
         >
-          <MingcutePhoneFill className="w-full h-full" />
+          <MingcutePhoneFill fill={phoneIconColor} className="w-full h-full" />
         </motion.a>
       </nav>
 
@@ -175,7 +204,7 @@ const NavBar: React.FC = () => {
             target={"_blank"}
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.9 }}
-            className="w-6 h-6"
+            className={`w-6 h-6 ${phoneTextColor} transition-colors duration-300`}
             onClick={() => setIsOpen(false)}
           >
             <DeviconFacebook className="w-full h-full" />
@@ -186,7 +215,7 @@ const NavBar: React.FC = () => {
             target={"_blank"}
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.9 }}
-            className="w-7 h-7"
+            className={`w-7 h-7 ${phoneTextColor} transition-colors duration-300`}
           >
             <SkillIconsInstagram className="w-full h-full" />
           </motion.a>
@@ -195,7 +224,7 @@ const NavBar: React.FC = () => {
             href="tel:2509051123"
             whileHover={{ y: -3 }}
             whileTap={{ scale: 0.9 }}
-            className="self-center "
+            className={`self-center ${phoneTextColor} transition-colors duration-300`}
           >
             <div> 250-905-1123</div>
           </motion.a>
