@@ -93,7 +93,24 @@ const NewHero = (props: Props) => {
               <Button
                 variant="outlined"
                 size="large"
-                className="border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-gray-900 px-10 py-4 text-lg font-bold rounded-xl backdrop-blur-sm bg-white/10 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 w-fit"
+                sx={{
+                  border: "2px solid #fbbf24", // amber-400 color
+                  color: "#fbbf24",
+                  fontWeight: "bold",
+                  fontSize: "1.125rem",
+                  padding: "16px 40px",
+                  borderRadius: "12px",
+                  backdropFilter: "blur(4px)",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    backgroundColor: "#fbbf24",
+                    color: "#374151", // gray-900
+                    transform: "scale(1.05) translateY(-4px)",
+                    border: "2px solid #fbbf24",
+                  },
+                }}
+                className=" w-fit"
               >
                 <Link href="/menu" className="no-underline">
                   VIEW OUR MENU
