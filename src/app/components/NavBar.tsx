@@ -147,7 +147,7 @@ const NavBar: React.FC = () => {
   const phoneIconColor = isHomePage && !isScrolled ? "#ffffff" : "#000000";
   return (
     <header
-      className={`sticky z-50 top-0 w-full px-32 py-5 xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6 font-semibold text-lg flex items-center justify-between ${headerTextColor} transition-all duration-300 ease-in-out ${
+      className={`sticky z-50 top-0 w-full px-32 py-7 xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6 font-semibold text-lg flex items-center justify-between ${headerTextColor} transition-all duration-300 ease-in-out ${
         isScrolled
           ? "bg-white shadow-lg backdrop-blur-sm opacity-90"
           : "bg-transparent"
