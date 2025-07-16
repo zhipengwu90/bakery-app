@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
@@ -67,9 +68,10 @@ export const metadata: Metadata = {
   other: {
     "geo.region": "CA-BC",
     "geo.placename": "Parksville",
-    "geo.position": "49.3175;-124.3139", // Approximate coordinates for Parksville, BC
+    "geo.position": "49.3175;-124.3139",
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,6 +79,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-MJ9SM199H3"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-MJ9SM199H3');
+          `}
+        </Script>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
