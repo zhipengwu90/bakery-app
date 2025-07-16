@@ -39,7 +39,7 @@ const HourCard = (props: Props) => {
   const handleClick = () => {
     const hoursSection = document.getElementById("hours-section");
     if (hoursSection) {
-      const headerHeight = 80; // Adjust based on your header height
+      const headerHeight = 120; // Adjust based on your header height
       const elementPosition = hoursSection.getBoundingClientRect().top;
       const offsetPosition =
         elementPosition + window.pageYOffset - headerHeight;
