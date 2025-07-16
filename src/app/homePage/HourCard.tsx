@@ -1,12 +1,9 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const HourCard = (props: Props) => {
-  const router = useRouter();
-
   const getTodaysHours = () => {
     // Get current time in Vancouver timezone
     const now = new Date();
@@ -40,7 +37,18 @@ const HourCard = (props: Props) => {
   const { hours, isOpen } = getTodaysHours();
 
   const handleClick = () => {
-    router.push("/about");
+    const hoursSection = document.getElementById("hours-section");
+    if (hoursSection) {
+      const headerHeight = 80; // Adjust based on your header height
+      const elementPosition = hoursSection.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
   };
 
   return (

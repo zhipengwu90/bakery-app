@@ -64,8 +64,15 @@ const NavBar: React.FC = () => {
         {title}
 
         <span
-          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 group-hover:bg-red-500 bg-dark
-        ${pathname === href ? "w-full" : "w-0"}`}
+          className={`absolute inline-block h-[2px] left-0 -bottom-0.5 group-hover:w-full transition-[width] ease-in-out duration-300 ${
+            pathname === href ? "w-full bg-red-500" : "w-0"
+          } ${
+            pathname === href
+              ? "bg-red-500"
+              : isHomePage && !isScrolled
+              ? "group-hover:bg-red-500"
+              : "group-hover:bg-red-500"
+          }`}
         >
           &nbsp;
         </span>
@@ -148,9 +155,7 @@ const NavBar: React.FC = () => {
   return (
     <header
       className={`sticky z-50 top-0 w-full px-32 py-7 xl:px-24 lg:px-16 md:px-12 sm:px-8 xs:px-6 font-semibold text-lg flex items-center justify-between ${headerTextColor} transition-all duration-300 ease-in-out ${
-        isScrolled
-          ? "bg-white shadow-lg backdrop-blur-sm opacity-90"
-          : "bg-transparent"
+        isScrolled ? "bg-white  opacity-90" : "bg-transparent"
       }`}
     >
       <button

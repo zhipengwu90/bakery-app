@@ -1,61 +1,57 @@
-"use client";
 import React, { useState } from "react";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import Modal from "@mui/material/Modal";
 import Image from "next/image";
-import { useMediaQuery } from "@mui/material";
-import newCake from "../../../public/newItems/newCake.jpg";
-import newYearBg from "../../../public/newItems/newYearBg.png";
-import snake from "../../../public/newItems/snake.png";
+
+import croissant from "../../../public/newItems/croissant.jpg";
 
 type Props = {};
 
 const NewItem = (props: Props) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
   return (
-    <div className="px-32 lg:px-4 my-3">
-      <div className="flex flex-row items-center justify-center w-full my-8">
-        <div className="flex-grow border-t border-red-500"></div>
-        <div className="px-4 text-center text-2xl font-bold text-red-500">
-          Taste What’s New
+    <div className="bg-white border-2 border-red-100 rounded-lg p-6 shadow-lg">
+      {/* Section Header */}
+      <div className="flex items-center justify-center w-full ">
+        <div className="flex-grow border-t-2 border-red-700 max-w-24"></div>
+        <div className="px-6 text-center">
+          <h2 className="text-xl  font-bold text-red-700 whitespace-nowrap">
+            Taste What's New
+          </h2>
         </div>
-        <div className="flex-grow border-t border-red-500"></div>
+        <div className="flex-grow border-t-2 border-red-700 max-w-24"></div>
       </div>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-1 ">
-        <Image
-          src={newCake}
-          alt="newYearCake"
-          className="rounded-lg shadow-lg h-full"
-        />
-        <div
-          className="relative 
-          sm:h-[75vh]
-        
 
-        border-2 border-red-400 rounded-lg p-6  shadow-lg"
-        >
-          <Image
-            src={newYearBg}
-            alt="newYearBg"
-            className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
-          />
-          <div className="relative z-10  text-red-800">
-            <p className="font-bold text-md md:text-md  ">
-              Celebrate the Lunar New Year with Brazen Poppy’s limited-edition
-              6-inch cakes! Available in Sea Salt Oreo and Seasonal Fruit
-              flavors for $45, these cakes are perfect for adding sweetness to
-              your family gatherings or reunions with friends.
-            </p>
+      {/* Main Content */}
+      <div className="">
+        {/* Content Section */}
 
-            <p className="font-bold ">
-              The cake features the Chinese characters “新年快乐” (Happy New
-              Year) and a decorative red square with the character “福”
-              (Fortune), symbolizing good luck and prosperity for the year
-              ahead. Order now and share the joy of a sweet Lunar New Year!
-            </p>
-            {/* <Image src={snake} alt="snake" className="w-1/2" /> */}
+        {/* Description */}
+        <div className="bg-gradient-to-r my-3 from-green-50 to-orange-50 border-l-4 border-green-500 p-6 rounded-lg space-y-4">
+          <p className="text-gray-800 leading-relaxed text-lg ">
+            Introducing our Croissant Sandwich — a buttery, flaky delight with a
+            touch of sweetness. Freshly baked and perfect with coffee or tea. A
+            must-try for pastry lovers!
+          </p>
+        </div>
+
+        {/* Image Section */}
+        <div className="relative order-2 lg:order-1">
+          <div className="relative overflow-hidden rounded-2xl shadow-2xl group">
+            <Image
+              src={croissant}
+              alt="Special New Item"
+              className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+            {/* New Badge */}
+            <div className="absolute top-6 left-6 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full font-bold text-sm shadow-lg">
+              NEW!
+            </div>
+
+            {/* Special Offer Badge */}
+            {/* <div className="absolute top-6 right-6 bg-gradient-to-r from-amber-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+              Limited Time
+            </div> */}
           </div>
         </div>
       </div>
