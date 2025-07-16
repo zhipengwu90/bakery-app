@@ -90,32 +90,32 @@ const NewHero = (props: Props) => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row sm:justify-center gap-4 pt-4">
-              <Button
-                variant="outlined"
-                size="large"
-                sx={{
-                  border: "2px solid #fbbf24", // amber-400 color
-                  color: "#fbbf24",
-                  fontWeight: "bold",
-                  fontSize: "1.125rem",
-                  padding: "16px 40px",
-                  borderRadius: "12px",
-                  backdropFilter: "blur(4px)",
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    backgroundColor: "#fbbf24",
-                    color: "#374151", // gray-900
-                    transform: "scale(1.05) translateY(-4px)",
-                    border: "2px solid #fbbf24",
-                  },
-                }}
-                className=" w-fit"
-              >
-                <Link href="/menu" className="no-underline">
+              <Link href="/menu" className="no-underline">
+                <Button
+                  variant="outlined"
+                  size="large"
+                  sx={{
+                    border: "2px solid #fbbf24", // amber-400 color
+                    color: "#fbbf24",
+                    fontWeight: "bold",
+                    fontSize: "1.125rem",
+                    padding: "16px 40px",
+                    borderRadius: "12px",
+                    backdropFilter: "blur(4px)",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      backgroundColor: "#fbbf24",
+                      color: "#374151", // gray-900
+                      transform: "scale(1.05) translateY(-4px)",
+                      border: "2px solid #fbbf24",
+                    },
+                  }}
+                  className=" w-fit"
+                >
                   VIEW OUR MENU
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
 
