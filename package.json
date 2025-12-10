@@ -19,9 +19,10 @@
     "browser-image-compression": "^2.0.2",
     "embla-carousel-react": "^8.5.1",
     "motion": "^11.11.17",
-    "next": "15.0.3",
+    "next": "^15.0.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",
