@@ -285,7 +285,7 @@ const Context = (props: Props) => {
 
         {/* Quick Actions Grid - new item */}
         <div className="grid grid-cols-12 gap-6 ">
-          <div className="col-span-6 bg-white border-2 border-red-100 rounded-lg p-6 shadow-lg relative">
+          <div className="col-span-6  lg:col-span-6  md:col-span-12 sm:col-span-12 bg-white border-2 border-red-100 rounded-lg p-6 shadow-lg relative">
             {/* Edit Button in Corner */}
             <IconButton
               onClick={handleOpenEdit}
