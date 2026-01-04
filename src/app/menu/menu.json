@@ -11,42 +11,42 @@
       "name": "Canadiano",
       "description": "",
       "priceM": 4.25,
-      "priceL": 5.00,
+      "priceL": 5.0,
       "img": ""
     },
     {
       "name": "Latte",
       "description": "",
       "priceM": 5.35,
-      "priceL": 6.00,
+      "priceL": 6.0,
       "img": ""
     },
     {
       "name": "Cappuccino",
       "description": "",
       "priceM": 5.35,
-      "priceL": 6.00,
+      "priceL": 6.0,
       "img": ""
     },
     {
       "name": "Chai Latte",
       "description": "",
-      "priceM": 5.50,
-      "priceL": 6.00,
+      "priceM": 5.5,
+      "priceL": 6.0,
       "img": ""
     },
     {
       "name": "London Fog",
       "description": "",
-      "priceM": 5.50,
-      "priceL": 6.00,
+      "priceM": 5.5,
+      "priceL": 6.0,
       "img": ""
     },
     {
       "name": "Hot Chocolate",
       "description": "",
-      "priceM": 4.50,
-      "priceL": 5.00,
+      "priceM": 4.5,
+      "priceL": 5.0,
       "img": ""
     },
     {
@@ -60,7 +60,7 @@
       "name": "Matcha Latte",
       "description": "",
       "priceM": 5.85,
-      "priceL": 6.50,
+      "priceL": 6.5,
       "img": ""
     },
     {
@@ -73,15 +73,15 @@
     {
       "name": "Tea",
       "description": "",
-      "priceM": 3.00,
+      "priceM": 3.0,
       "priceL": null,
       "img": ""
     },
     {
       "name": "Steamers",
       "description": "",
-      "priceM": 3.50,
-      "priceL": 4.00,
+      "priceM": 3.5,
+      "priceL": 4.0,
       "img": ""
     },
     {
@@ -96,7 +96,7 @@
     {
       "name": "Italian Soda",
       "description": "",
-      "price": 3.50,
+      "price": 3.5,
       "img": ""
     },
     {
@@ -114,7 +114,7 @@
     {
       "name": "Matcha Strawberry",
       "description": "",
-      "price": 7.50,
+      "price": 7.5,
       "img": ""
     },
     {
@@ -126,19 +126,7 @@
     {
       "name": "Lavender tea latte",
       "description": "",
-      "price": 6.50,
-      "img": ""
-    },
-    {
-      "name": "Lemonade",
-      "description": "",
-      "price": 3.25,
-      "img": ""
-    },
-    {
-      "name": "Dirty",
-      "description": "",
-      "price": 4.0,
+      "price": 6.5,
       "img": ""
     }
   ],
@@ -146,37 +134,37 @@
     {
       "name": "MONTE CRISTO",
       "description": "Ham & chicken, MJ cheese, egg-dipped toast, icing sugar on top, cranberry jam",
-      "price": 14.00,
+      "price": 14.0,
       "img": "Sandwich.jpg"
     },
     {
       "name": "REUBEN",
       "description": "Rye bread, corned beef, Swiss cheese, sauerkraut",
-      "price": 14.00,
+      "price": 14.0,
       "img": ""
     },
     {
       "name": "BREAKFAST SANDWICH",
       "description": "Ham, bacon, or sausage with egg, cheese, lettuce, tomato, Bun",
-      "price": 11.00,
+      "price": 11.0,
       "img": ""
     },
     {
       "name": "CUSTOM SANDWICH",
       "description": "Custom your own sandwich. Choice of bread, protein, toppings, and sauces",
-      "price": 12.00,
+      "price": 12.0,
       "img": ""
     },
     {
       "name": "CHEESEBURGER",
       "description": "Beef, onion, cheese, lettuce, tomato, pickles, bun",
-      "price": 14.00,
+      "price": 14.0,
       "img": ""
     },
     {
       "name": "BLT",
       "description": "Bacon, Lettuce, and Tomato",
-      "price": 11.00,
+      "price": 11.0,
       "img": ""
     }
   ],
@@ -192,7 +180,7 @@
       "name": "TWO EGGS BREAKFAST",
       "time": " 11:30AM",
       "description": "Two eggs, Bacon, ham or sausage, hashbrown OR 1pc toast",
-      "price": 12.00,
+      "price": 12.0,
       "img": ""
     }
   ],
@@ -200,37 +188,37 @@
     {
       "name": "AVOCADO TOAST",
       "description": "Topped with mixed seeds",
-      "price": 11.00,
+      "price": 11.0,
       "img": ""
     },
     {
       "name": "FRENCH TOAST",
       "description": "(OR+$2.00 for Cinnamon Bun French Toast)",
-      "price": 9.00,
+      "price": 9.0,
       "img": ""
     },
     {
       "name": "GRILLED CHEESE",
       "description": "",
-      "price": 9.00,
+      "price": 9.0,
       "img": ""
     },
     {
       "name": "SOFT TACO",
       "description": "Chicken or beef (+$2.00 for shrimp)",
-      "price": 9.50,
+      "price": 9.5,
       "img": ""
     },
     {
       "name": "CHILI",
       "description": "Ground beef",
-      "price": 14.50,
+      "price": 14.5,
       "img": ""
     },
     {
       "name": "BAGEL OR TOAST + JAM",
       "description": "",
-      "price": 3.50,
+      "price": 3.5,
       "img": ""
     }
   ],
