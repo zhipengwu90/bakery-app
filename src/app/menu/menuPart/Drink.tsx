@@ -44,7 +44,7 @@ const Drink = (props: Props) => {
         <div className="  text-xl grid grid-cols-2 text-center text-gray-700 font-semibold mb-2">
           <div>{"\u00A0"}</div>
 
-          <div className="">Iced only</div>
+          <div className="">One Size</div>
         </div>
 
         {featureDrink &&
@@ -63,18 +63,19 @@ const Drink = (props: Props) => {
       </div>
 
       <div className="text-xl   sm:text-base  my-6">
+        <div className="text-center">Adding creamy cheese foam + $1.5</div>
         <div>
           <span className="font-bold text-red-500"> Milk Options: </span>
           Oat, Soy, Almond, Skim
         </div>
         <div>
           <span className="font-bold text-red-500"> Flavour shots: </span>
-          Vanilla, Caramel, Hazelnut, Tiramisu, Lavender, Mango, Raspberry,
+          Vanilla, Caramel, Hazelnut, SugarFree Vanilla, Tiramisu, Lavender, Mango, Raspberry,
           Mint, Pumpkin Spice
         </div>
 
         <div className="mt-3 font-semibold">
-          All drinks can be served iced or hot, except for the iced drinks.
+          All drinks can be served iced
         </div>
       </div>
     </div>
