@@ -226,28 +226,28 @@
     {
       "name": "Garden Salad",
       "description": "",
-      "priceM": 8.0,
+      "priceM": 8.5,
       "priceL": 15.0,
       "img": ""
     },
     {
       "name": "Caesar Salad",
       "description": "",
-      "priceM": 8.0,
+      "priceM": 9.0,
       "priceL": 15.0,
       "img": ""
     },
     {
       "name": "Greek Salad",
       "description": "",
-      "priceM": 8.0,
+      "priceM": 9.0,
       "priceL": 15.0,
       "img": ""
     },
     {
       "name": "Chef’s Cobb Salad",
       "description": "",
-      "priceM": 9.0,
+      "priceM": 10.5,
       "priceL": 17.0,
       "img": ""
     }
@@ -256,8 +256,8 @@
     {
       "name": "Soup of the Day",
       "description": "",
-      "priceM": 6,
-      "priceL": 8,
+      "priceM": 6.5,
+      "priceL": 8.5,
       "img": ""
     }
   ]
