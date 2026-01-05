@@ -234,21 +234,21 @@
       "name": "Caesar Salad",
       "description": "",
       "priceM": 9.0,
-      "priceL": 15.0,
+      "priceL": 16.0,
       "img": ""
     },
     {
       "name": "Greek Salad",
       "description": "",
       "priceM": 9.0,
-      "priceL": 15.0,
+      "priceL": 16.0,
       "img": ""
     },
     {
       "name": "Chef’s Cobb Salad",
       "description": "",
       "priceM": 10.5,
-      "priceL": 17.0,
+      "priceL": 18.0,
       "img": ""
     }
   ],
