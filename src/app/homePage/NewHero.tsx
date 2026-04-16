@@ -43,7 +43,7 @@ const NewHero = () => {
               </h1>
             </div>
 
-            {/* Hours Card — hidden on desktop since the full Hours card is visible */}
+          
             <HourCard />
 
             {/* Main Hero Text */}
