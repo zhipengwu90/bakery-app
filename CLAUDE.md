@@ -24,17 +24,20 @@ Next.js 15 App Router project for **Brazen Poppy Bakery** (Parksville, BC). Type
 - `homePage/` — Home page sections (hero, new items, hours, photo carousel)
 - `menu/` — Menu page; menu data lives in `menu/menu.json`
 - `about/` — About page
-- `admin/` — Admin dashboard (protected, login via `admin/loginPart/actions.ts`)
-- `manager/` — Manager page with context state (`manager/part/Context.tsx`)
+- `admin/` — Login page only; successful login redirects to `/manager`
+- `manager/` — Protected dashboard (`manager/part/Context.tsx`): edit the "New Item" homepage section and manage the food photo gallery with drag-to-reorder
 - `components/` — Shared components: `NavBar.tsx`, `Footer.tsx`, `Logo.tsx`, `Icons.tsx`
 - `utils/supabase/` — Supabase clients: `client.ts` (browser), `server.ts` (SSR), `middleware.ts`
 - `utils/sql/` — DB query helpers (`getNewItem`, `updateNewItem`)
 
 ### Data & backend
 
-- **Database**: Supabase (PostgreSQL). Environment variables `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are required in `.env`.
-- **Auth**: Session management in `middleware.ts` (root) guards `/admin` and `/manager` routes.
-- **Menu content**: Static data in `src/app/menu/menu.json`; dynamic "new items" fetched from Supabase.
+- **Database**: Supabase (PostgreSQL). Required env vars: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env`.
+- **Auth**: Session management in `middleware.ts` (root) guards `/manager`; login uses `supabase.auth.signInWithPassword`.
+- **Menu content**: Fully static in `src/app/menu/menu.json` — edit that file to change prices or items.
+- **Business hours**: Fully static in `src/app/homePage/hoursData.ts` (`WEEKLY_HOURS` array) — edit that file to change hours.
+- **New Item section** (homepage): Dynamic — stored in Supabase table `brazen_page`, row `id=1` / `type="newItem"`. Fields: `title`, `description`, `img_url`, `img_filename`, `file_path`.
+- **Food gallery** (homepage carousel): Dynamic — rows in `brazen_page` with `type="foodImg"`, ordered by `img_display_order` descending. Managed via the `/manager` dashboard.
 
 ### Notable libraries
 

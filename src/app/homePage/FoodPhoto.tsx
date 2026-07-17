@@ -148,7 +148,7 @@ const FoodPhoto = () => {
                 height={600}
                 priority
                 sizes="90vw"
-                quality={85}
+                quality={75}
                 placeholder="blur"
                 blurDataURL={shimmerDataUrl}
                 className="rounded-lg shadow-lg max-h-[80vh] w-auto object-contain"
