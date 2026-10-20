@@ -1,25 +1,26 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { DM_Sans, Fraunces } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const display = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+  axes: ["SOFT", "opsz"],
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const sans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
-  title: "Brazen Poppy Bakery - Fresh Baked Goods & Coffee in Parksville, BC",
+  metadataBase: new URL("https://brazenpoppy.ca"),
+  title: {
+    default: "Brazen Poppy Bakery — Fresh Baked Goods & Coffee in Parksville, BC",
+    template: "%s · Brazen Poppy Bakery",
+  },
   description:
-    "Award-winning bakery cafe in Parksville, BC offering homemade sandwiches with freshly baked bread, homemade soup, signature poppy seed rolls, and premium coffee. Daily breakfast and lunch specials.",
+    "Bakery café in Parksville, BC offering homemade sandwiches on fresh-baked bread, homemade soup, signature poppy seed rolls and great coffee. Breakfast and lunch daily.",
   keywords: [
     "bakery Parksville",
     "cafe Parksville BC",
@@ -48,9 +49,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Brazen Poppy Bakery - Fresh Baked Goods & Coffee in Parksville, BC",
+    title: "Brazen Poppy Bakery — Fresh Baked Goods & Coffee in Parksville, BC",
     description:
-      "Award-winning bakery cafe in Parksville, BC offering homemade sandwiches with freshly baked bread, homemade soup, signature poppy seed rolls, and premium coffee.",
+      "Bakery café in Parksville, BC offering homemade sandwiches on fresh-baked bread, homemade soup, signature poppy seed rolls and great coffee.",
     url: "https://brazenpoppy.ca",
     siteName: "Brazen Poppy Bakery",
     images: [
@@ -64,7 +65,6 @@ export const metadata: Metadata = {
     locale: "en_CA",
     type: "website",
   },
-
   other: {
     "geo.region": "CA-BC",
     "geo.placename": "Parksville",
@@ -72,13 +72,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${display.variable} ${sans.variable}`}>
       <head>
         {/* Google Analytics */}
         <Script
@@ -94,14 +90,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NavBar />
-        {children}
-        <div id="modal-root"></div>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

@@ -5,8 +5,9 @@ const deleteFoodImg = async (id: number, filePath: string | null): Promise<{ suc
     const supabase = createClient();
 
     if (filePath) {
+      // Gallery photos live in the "foodPhoto" bucket (see uploadFoodImg).
       const { error: storageError } = await supabase.storage
-        .from("brazen_page")
+        .from("foodPhoto")
         .remove([filePath]);
       if (storageError) throw storageError;
     }

@@ -19,33 +19,35 @@ Next.js 15 App Router project for **Brazen Poppy Bakery** (Parksville, BC). Type
 
 **Path alias**: `@/*` maps to `./src/*`
 
-### Key directories under `src/app/`
+### Key directories
 
-- `homePage/` — Home page sections (hero, new items, hours, photo carousel)
-- `menu/` — Menu page; menu data lives in `menu/menu.json`
-- `about/` — About page
-- `admin/` — Login page only; successful login redirects to `/manager`
-- `manager/` — Protected dashboard (`manager/part/Context.tsx`): edit the "New Item" homepage section and manage the food photo gallery with drag-to-reorder
-- `components/` — Shared components: `NavBar.tsx`, `Footer.tsx`, `Logo.tsx`, `Icons.tsx`
-- `utils/supabase/` — Supabase clients: `client.ts` (browser), `server.ts` (SSR), `middleware.ts`
-- `utils/sql/` — DB query helpers (`getNewItem`, `updateNewItem`)
+- `src/app/(site)/` — Public pages sharing the header/footer layout: home (`page.tsx`), `menu/`, `about/`. Shared pieces in `(site)/_components/` (home sections under `_components/home/`).
+- `src/app/admin/` — Staff login page; successful login redirects to `/manager`
+- `src/app/manager/` — Protected "Website manager" dashboard. `_components/Dashboard.tsx` hosts tabbed editors: Menu, Hours, What's new, Photos, Site text
+- `src/app/actions/revalidate.ts` — Server action the dashboard calls after saving so public pages refresh immediately
+- `src/lib/content/` — Content layer: `types.ts` (data shapes), `defaults.ts` (fallback content), `server.ts` (public reads), `hours.ts` / `format.ts` (helpers)
+- `src/app/utils/supabase/` — Supabase clients: `client.ts` (browser), `server.ts` (SSR, cookie-based auth)
+- `src/app/utils/sql/` — Gallery mutations (`uploadFoodImg`, `deleteFoodImg`, `updateFoodImgOrder`)
+- `supabase/migrations/` — SQL migrations (apply via Supabase dashboard/CLI)
 
 ### Data & backend
 
 - **Database**: Supabase (PostgreSQL). Required env vars: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env`.
-- **Auth**: Session management in `middleware.ts` (root) guards `/manager`; login uses `supabase.auth.signInWithPassword`.
-- **Menu content**: Fully static in `src/app/menu/menu.json` — edit that file to change prices or items.
-- **Business hours**: Fully static in `src/app/homePage/hoursData.ts` (`WEEKLY_HOURS` array) — edit that file to change hours.
-- **New Item section** (homepage): Dynamic — stored in Supabase table `brazen_page`, row `id=1` / `type="newItem"`. Fields: `title`, `description`, `img_url`, `img_filename`, `file_path`.
-- **Food gallery** (homepage carousel): Dynamic — rows in `brazen_page` with `type="foodImg"`, ordered by `img_display_order` descending. Managed via the `/manager` dashboard.
+- **Auth**: `/manager` checks `supabase.auth.getUser()` server-side and redirects to `/admin`. (The root `middleware.ts` is not picked up because the app lives in `src/`.)
+- **Editable content** (`site_content` table, one row per key, JSON in `data`): `menu`, `hours`, `settings` (announcement bar, hero text, contact info, About-page story, legal name). Shapes in `src/lib/content/types.ts`. If a row is missing or Supabase errors, `getContent()` falls back to `src/lib/content/defaults.ts`.
+- **What's new** (homepage feature): `brazen_page` row `id=1` / `type="newItem"`; `is_displayed` toggles it. Images in storage bucket `brazen_page`.
+- **Food gallery**: `brazen_page` rows with `type="foodImg"`, ordered by `img_display_order` descending (unique). Images in storage bucket `foodPhoto`.
+- **Caching**: public pages are statically rendered with `revalidate = 300`; dashboard saves call `revalidateSite()` for instant updates.
+
+### Design system
+
+Tailwind tokens in `tailwind.config.ts`: `cream`, `ink`, `poppy`, `leaf`, `crust`; fonts `font-display` (Fraunces) and `font-sans` (DM Sans). Component classes (`container-page`, `eyebrow`, `btn-primary`, `btn-outline`, `btn-ghost`, `leader`) in `globals.css`. Breakpoints are **desktop-first** (`md:` = max-width 767px).
 
 ### Notable libraries
 
-- **Motion** (Framer Motion v11 fork) — page/component animations
-- **Embla Carousel** — image sliders in `FoodPhoto.tsx`
-- **MUI Material + Icons** — used alongside Tailwind for select UI elements
-- **Browser Image Compression** — client-side image compression in admin upload flow
-- **React Icons** — icon library (re-exported from `components/Icons.tsx`)
+- **Browser Image Compression** — client-side image compression in dashboard uploads
+- **React Icons** — icons (`react-icons/fi` mostly)
+- MUI, Motion and Embla are still in `package.json` but no longer used
 - **Google Analytics** — tag `G-MJ9SM199H3` embedded in root layout
 
 ### Image handling

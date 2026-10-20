@@ -1,107 +1,92 @@
 "use client";
-import React, { useState, useEffect, Suspense } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FiArrowLeft } from "react-icons/fi";
+import logo from "../../../../public/image/BrazenPoppy.png";
+import { inputClass } from "../../manager/_components/ui";
 import { login } from "./actions";
-import { useSearchParams, useRouter } from "next/navigation";
 
-import CircularProgress from "@mui/material/CircularProgress";
-
-type Props = {};
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-  const loginHandler = async () => {
-    setIsLoading(true);
-    setErrorMessage(""); // Clear previous error message
-    if (email.trim() === "" || password.trim() === "") {
-      console.log("Email and password cannot be empty.");
-      setIsLoading(false);
-      return;
-    }
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
     try {
-      const result = await login(email, password);
+      const result = await login(email.trim(), password);
       if (result.success) {
         router.push("/manager");
-      } else {
-        setIsLoading(false);
-        setErrorMessage(result.message || "An unknown error occurred.");
+        router.refresh();
+        return;
       }
-    } catch (error) {
-      console.error("Login failed:", error);
-      setIsLoading(false);
-      setErrorMessage("Invalid login credentials. Please try again.");
+      setError(result.message || "Something went wrong. Please try again.");
+    } catch {
+      setError("Invalid login credentials. Please try again.");
     }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      loginHandler();
-    }
+    setLoading(false);
   };
 
   return (
-    <div className="flex justify-center items-center h-[80vh]">
-      {isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <CircularProgress color="inherit" />
+    <div className="grid min-h-screen place-items-center bg-cream px-4">
+      <div className="w-full max-w-sm">
+        <div className="rounded-3xl border border-ink/10 bg-white p-8 shadow-xl shadow-ink/5">
+          <Image src={logo} alt="Brazen Poppy Bakery" className="mx-auto h-20 w-auto" priority sizes="120px" />
+          <h1 className="mt-6 text-center font-display text-3xl">Staff login</h1>
+          <p className="mt-1 text-center text-sm text-ink-muted">Sign in to update the website.</p>
+
+          <form onSubmit={submit} className="mt-8 space-y-4">
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-ink-soft">Email</span>
+              <input
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                }}
+                className={inputClass}
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-ink-soft">Password</span>
+              <input
+                type="password"
+                autoComplete="current-password"
+                required
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                }}
+                className={inputClass}
+              />
+            </label>
+            {error && (
+              <p role="alert" className="rounded-xl bg-poppy-light px-4 py-2.5 text-sm font-medium text-poppy-dark">
+                {error}
+              </p>
+            )}
+            <button type="submit" disabled={loading || !email || !password} className="btn-primary w-full !py-3.5">
+              {loading ? "Signing in…" : "Sign in"}
+            </button>
+          </form>
         </div>
-      )}
-
-      <div className="border border-1 bg-white flex flex-col gap-3 justify-around items-center rounded-lg w-1/2 h-2/3 lg:w-3/4 lg:h-3/4 py-5">
-        <div className="text-dark text-xl font-bold"> Admin Login </div>
-        <div className=" flex flex-col gap-3 w-full justify-center items-center ">
-          <TextField
-            label="Email"
-            color="primary"
-            type="email"
-            placeholder="Enter your email"
-            className="w-1/2 lg:w-4/5  z-0"
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrorMessage("");
-            }}
-            onKeyDown={handleKeyPress}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            placeholder="Enter your password"
-            color="primary"
-            className="w-1/2 lg:w-4/5 z-0 "
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrorMessage("");
-            }}
-            onKeyDown={handleKeyPress}
-          />
-
-          {errorMessage && (
-            <div className="text-red-500 text-sm font-bold">{errorMessage}</div>
-          )}
-        </div>
-
-        <Button
-          disabled={email === "" || password === ""}
-          onClick={loginHandler}
-          variant="contained"
-          className="z-0"
-        >
-          Log in
-        </Button>
+        <Link href="/" className="mt-6 flex items-center justify-center gap-2 text-sm text-ink-muted hover:text-ink">
+          <FiArrowLeft /> Back to the website
+        </Link>
       </div>
     </div>
   );
 };
-
-// const LoginPage = () => (
-//   <Suspense fallback={<div>Loading...</div>}>
-//     <Login />
-//   </Suspense>
-// );
 
 export default LoginPage;
