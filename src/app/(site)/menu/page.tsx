@@ -19,7 +19,8 @@ function Section({ section }: { section: MenuSection }) {
   const sized = section.sizes.length > 0;
 
   return (
-    <section id={section.id} className="mb-16 break-inside-avoid scroll-mt-40">
+    // scroll-mt adds the pill bar's height on top of the header offset already set on <html>.
+    <section id={section.id} className="mb-16 break-inside-avoid scroll-mt-16">
       <div className="flex items-end justify-between gap-4 border-b-2 border-ink pb-3">
         <div>
           <h2 className="font-display text-[2.1rem] leading-tight">{section.title}</h2>
