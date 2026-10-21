@@ -7,6 +7,7 @@ import { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import logo from "../../../../public/image/BrazenPoppy.png";
 import { inputClass } from "../../manager/_components/ui";
+import { createClient } from "../../utils/supabase/client";
 import { login } from "./actions";
 
 const LoginPage = () => {
@@ -15,6 +16,20 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  const sendReset = async () => {
+    if (!email.trim()) {
+      setError("Enter your email above first.");
+      return;
+    }
+    setError("");
+    const { error } = await createClient().auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/admin/reset-password`,
+    });
+    if (error) setError(error.message);
+    else setNotice("Check your email for a link to set a new password.");
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,8 +91,12 @@ const LoginPage = () => {
                 {error}
               </p>
             )}
+            {notice && <p className="rounded-xl bg-leaf-light px-4 py-2.5 text-sm font-medium text-leaf-dark">{notice}</p>}
             <button type="submit" disabled={loading || !email || !password} className="btn-primary w-full !py-3.5">
               {loading ? "Signing in…" : "Sign in"}
+            </button>
+            <button type="button" onClick={sendReset} className="block w-full text-center text-sm text-ink-muted hover:text-ink">
+              Forgot password?
             </button>
           </form>
         </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import Script from "next/script";
+import AuthLinkRedirect from "./AuthLinkRedirect";
 import "./globals.css";
 
 const display = Fraunces({
@@ -90,7 +91,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           `}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthLinkRedirect />
+        {children}
+      </body>
     </html>
   );
 }
