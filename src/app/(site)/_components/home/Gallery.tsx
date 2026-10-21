@@ -73,7 +73,7 @@ export default function Gallery({ photos, instagram }: { photos: GalleryPhoto[];
               }`}
             >
               <Image
-                src={photo.img_url}
+                src={photo.thumb_url ?? photo.img_url}
                 alt=""
                 fill
                 sizes={i === 0 ? "(max-width: 767px) 92vw, 560px" : "(max-width: 767px) 46vw, 280px"}

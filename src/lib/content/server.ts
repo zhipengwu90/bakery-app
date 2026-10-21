@@ -63,7 +63,7 @@ export async function getFeatured(includeHidden = false): Promise<FeaturedItem |
 export async function getGallery(): Promise<GalleryPhoto[]> {
   const { data, error } = await publicClient()
     .from("brazen_page")
-    .select("id, img_url, file_path, img_display_order")
+    .select("id, img_url, thumb_url, file_path, img_display_order")
     .eq("type", "foodImg")
     .order("img_display_order", { ascending: false });
   if (error) {

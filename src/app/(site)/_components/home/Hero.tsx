@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMapPin } from "react-icons/fi";
-import bun from "../../../../../public/foodPhotos/poppyseedBun.jpeg";
-import coffee from "../../../../../public/foodPhotos/coffee.jpeg";
+import bun from "../../../../../public/foodPhotos/poppyseedBun.webp";
+import coffee from "../../../../../public/foodPhotos/coffee.webp";
 import type { HoursData, SiteSettings } from "@/lib/content/types";
 import Emphasis from "../Emphasis";
 import OpenStatus from "../OpenStatus";

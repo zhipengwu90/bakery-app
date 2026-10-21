@@ -1,5 +1,5 @@
-import imageCompression from "browser-image-compression";
 import { createClient } from "../supabase/client";
+import { compressImage, UPLOAD_CACHE_CONTROL } from "./compressImage";
 
 interface UploadResponse {
   success: boolean;
@@ -21,6 +21,7 @@ const uploadFoodImg = async (
 
     let publicUrl: string | null = null;
     let fileName: string | null = null;
+    let thumbUrl: string | null = null;
 
     // Handle image upload if file provided
     if (file) {
@@ -35,21 +36,18 @@ const uploadFoodImg = async (
       }
 
       try {
-        // Compress image
-        const options = {
-          maxSizeMB: 0.5,
-          maxWidthOrHeight: 1200,
-          useWebWorker: true,
-        };
-
-        const compressedFile = await imageCompression(file, options);
+        // Full-size photo for the viewer, plus a small one for the homepage grid.
+        const [compressedFile, thumbFile] = await Promise.all([
+          compressImage(file, 1600, 0.4),
+          compressImage(file, 800, 0.08),
+        ]);
 
         fileName = `food_${Date.now()}`;
 
         // Upload compressed image to Supabase Storage
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from("foodPhoto")
-          .upload(fileName, compressedFile);
+          .upload(fileName, compressedFile, { cacheControl: UPLOAD_CACHE_CONTROL });
 
         if (uploadError) {
           console.error("Storage upload error:", uploadError.message);
@@ -73,6 +71,17 @@ const uploadFoodImg = async (
         if (!publicUrl) {
           return { success: false, error: "Failed to get public URL" };
         }
+
+        // The thumbnail is optional: without it the grid falls back to the full image.
+        const thumbName = `${fileName}_thumb`;
+        const { error: thumbError } = await supabase.storage
+          .from("foodPhoto")
+          .upload(thumbName, thumbFile, { cacheControl: UPLOAD_CACHE_CONTROL });
+        if (thumbError) {
+          console.error("Thumbnail upload error:", thumbError.message);
+        } else {
+          thumbUrl = supabase.storage.from("foodPhoto").getPublicUrl(thumbName).data.publicUrl;
+        }
       } catch (compressionError) {
         console.error("Image compression error:", compressionError);
         return {
@@ -93,6 +102,7 @@ const uploadFoodImg = async (
       updatePayload.img_url = publicUrl;
       updatePayload.file_path = fileName;
       updatePayload.img_filename = fileName;
+      updatePayload.thumb_url = thumbUrl;
     }
 
     // const { data: updateData, error: updateError } = await supabase

@@ -76,6 +76,8 @@ export interface FeaturedItem {
 export interface GalleryPhoto {
   id: number;
   img_url: string;
+  /** Small copy for the grid; null for photos uploaded before thumbnails existed. */
+  thumb_url: string | null;
   file_path: string | null;
   img_display_order: number;
 }

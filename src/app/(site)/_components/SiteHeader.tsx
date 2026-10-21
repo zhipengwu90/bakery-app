@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiFacebook, FiInstagram, FiMenu, FiPhone, FiX } from "react-icons/fi";
-import logo from "../../../../public/image/BrazenPoppy.png";
+import logo from "../../../../public/image/BrazenPoppy.webp";
 import { telHref } from "@/lib/content/format";
 import type { SiteSettings } from "@/lib/content/types";
 

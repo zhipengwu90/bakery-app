@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
-import logo from "../../../../public/image/BrazenPoppy.png";
+import logo from "../../../../public/image/BrazenPoppy.webp";
 import { inputClass } from "../../manager/_components/ui";
 import { createClient } from "../../utils/supabase/client";
 

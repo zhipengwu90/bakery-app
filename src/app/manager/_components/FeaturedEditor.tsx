@@ -1,9 +1,9 @@
 "use client";
 
-import imageCompression from "browser-image-compression";
 import { useEffect, useRef, useState } from "react";
 import { FiImage, FiTrash2, FiUpload } from "react-icons/fi";
 import { revalidateSite } from "@/app/actions/revalidate";
+import { compressImage, UPLOAD_CACHE_CONTROL } from "@/app/utils/sql/compressImage";
 import { createClient } from "@/app/utils/supabase/client";
 import type { FeaturedItem } from "@/lib/content/types";
 import { Card, Field, Input, SaveBar, Textarea, Toggle, useDraft, useToast } from "./ui";
@@ -61,9 +61,11 @@ export default function FeaturedEditor({ initial }: { initial: FeaturedItem | nu
       };
 
       if (file) {
-        const compressed = await imageCompression(file, { maxSizeMB: 0.5, maxWidthOrHeight: 1600, useWebWorker: true });
+        const compressed = await compressImage(file, 1400, 0.3);
         const name = `newItem_${Date.now()}`;
-        const { error } = await supabase.storage.from(BUCKET).upload(name, compressed);
+        const { error } = await supabase.storage
+          .from(BUCKET)
+          .upload(name, compressed, { cacheControl: UPLOAD_CACHE_CONTROL });
         if (error) throw error;
         patch.img_url = supabase.storage.from(BUCKET).getPublicUrl(name).data.publicUrl;
         patch.img_filename = name;

@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
-import breakfast from "../../../../../public/foodPhotos/breakfast2.jpeg";
-import lunch from "../../../../../public/foodPhotos/sandwich.jpeg";
-import treats from "../../../../../public/foodPhotos/muffins.jpeg";
+import breakfast from "../../../../../public/foodPhotos/breakfast2.webp";
+import lunch from "../../../../../public/foodPhotos/sandwich.webp";
+import treats from "../../../../../public/foodPhotos/muffins.webp";
 
 const PARTS = [
   {

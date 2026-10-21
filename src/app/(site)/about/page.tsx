@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { GiCoffeeCup, GiSlicedBread, GiWheat } from "react-icons/gi";
 import { FiArrowRight } from "react-icons/fi";
-import sign from "../../../../public/image/brazenPoppyImage.jpeg";
-import warm from "../../../../public/image/warm.jpg";
-import muffins from "../../../../public/foodPhotos/muffins.jpeg";
-import cookies from "../../../../public/foodPhotos/cookies2.jpg";
+import sign from "../../../../public/image/brazenPoppyImage.webp";
+import warm from "../../../../public/image/warm.webp";
+import muffins from "../../../../public/foodPhotos/muffins.webp";
+import cookies from "../../../../public/foodPhotos/cookies2.webp";
 import { getContent } from "@/lib/content/server";
 
 export const revalidate = 300;

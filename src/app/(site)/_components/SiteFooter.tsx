@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiFacebook, FiInstagram } from "react-icons/fi";
-import logo from "../../../../public/image/BrazenPoppy.png";
+import logo from "../../../../public/image/BrazenPoppy.webp";
 import { groupHours, mapsUrl, telHref } from "@/lib/content/format";
 import type { HoursData, SiteSettings } from "@/lib/content/types";
 

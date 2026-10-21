@@ -13,7 +13,7 @@ import { IconButton, SaveBar, useToast } from "./ui";
 async function fetchGallery(): Promise<GalleryPhoto[]> {
   const { data } = await createClient()
     .from("brazen_page")
-    .select("id, img_url, file_path, img_display_order")
+    .select("id, img_url, thumb_url, file_path, img_display_order")
     .eq("type", "foodImg")
     .order("img_display_order", { ascending: false });
   return (data ?? []) as GalleryPhoto[];
@@ -146,7 +146,7 @@ export default function GalleryEditor({ initial }: { initial: GalleryPhoto[] }) 
               className="group relative aspect-square cursor-grab overflow-hidden rounded-xl bg-ink/5 shadow-sm ring-1 ring-ink/10 active:cursor-grabbing"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photo.img_url} alt="" className="h-full w-full object-cover" draggable={false} />
+              <img src={photo.thumb_url ?? photo.img_url} alt="" className="h-full w-full object-cover" draggable={false} />
               {i === 0 && (
                 <span className="absolute left-2 top-2 rounded-full bg-ink/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
                   Featured

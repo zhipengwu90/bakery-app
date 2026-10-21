@@ -5,10 +5,10 @@ const deleteFoodImg = async (id: number, filePath: string | null): Promise<{ suc
     const supabase = createClient();
 
     if (filePath) {
-      // Gallery photos live in the "foodPhoto" bucket (see uploadFoodImg).
+      // Gallery photos and their thumbnails live in the "foodPhoto" bucket (see uploadFoodImg).
       const { error: storageError } = await supabase.storage
         .from("foodPhoto")
-        .remove([filePath]);
+        .remove([filePath, `${filePath}_thumb`]);
       if (storageError) throw storageError;
     }
 

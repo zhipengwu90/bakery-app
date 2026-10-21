@@ -15,7 +15,7 @@ import {
   FiStar,
   FiType,
 } from "react-icons/fi";
-import logo from "../../../../public/image/BrazenPoppy.png";
+import logo from "../../../../public/image/BrazenPoppy.webp";
 import { createClient } from "@/app/utils/supabase/client";
 import { getOpenStatus } from "@/lib/content/hours";
 import type { FeaturedItem, GalleryPhoto, HoursData, MenuData, SiteSettings } from "@/lib/content/types";
