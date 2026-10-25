@@ -43,7 +43,7 @@ const TABS: { id: TabId; label: string; icon: IconType; description: string }[] 
   { id: "hours", label: "Hours", icon: FiClock, description: "Weekly opening hours and holiday notices." },
   { id: "featured", label: "What's new", icon: FiStar, description: "The featured item on the homepage." },
   { id: "photos", label: "Photos", icon: FiImage, description: "The food gallery on the homepage." },
-  { id: "settings", label: "Site text", icon: FiType, description: "Announcement bar, headline, contact info and story." },
+  { id: "settings", label: "Text & photos", icon: FiType, description: "Announcement bar, homepage headline and cards, contact info, and the Our Story page." },
 ];
 
 function Overview({ data, go }: { data: DashboardData; go: (t: TabId) => void }) {

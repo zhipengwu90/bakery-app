@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiMapPin } from "react-icons/fi";
-import bun from "../../../../../public/foodPhotos/poppyseedBun.webp";
-import coffee from "../../../../../public/foodPhotos/coffee.webp";
+import { slotImage } from "@/lib/content/photos";
 import type { HoursData, SiteSettings } from "@/lib/content/types";
 import Emphasis from "../Emphasis";
 import OpenStatus from "../OpenStatus";
@@ -27,7 +26,7 @@ function RotatingBadge({ className = "" }: { className?: string }) {
 }
 
 export default function Hero({ settings, hours }: { settings: SiteSettings; hours: HoursData }) {
-  const { hero, contact } = settings;
+  const { hero, contact, photos } = settings;
   return (
     <section className="relative overflow-hidden">
       {/* soft warm glow behind the photo */}
@@ -65,17 +64,15 @@ export default function Hero({ settings, hours }: { settings: SiteSettings; hour
         <div className="relative col-span-5 mx-auto w-full max-w-md animate-fade-up [animation-delay:150ms] lg:col-span-1 md:max-w-xs">
           <div className="relative aspect-[4/5] overflow-hidden rounded-b-[2.5rem] rounded-t-full shadow-2xl shadow-ink/20">
             <Image
-              src={bun}
-              alt="Poppy seed buns with cream cheese icing, fresh from the oven"
+              {...slotImage(photos, "heroMain")}
               fill
               priority
-              placeholder="blur"
               sizes="(max-width: 1023px) 80vw, 420px"
               className="object-cover"
             />
           </div>
           <div className="absolute -bottom-8 -left-10 h-40 w-40 overflow-hidden rounded-full border-[6px] border-cream shadow-xl xl:-left-4 md:h-28 md:w-28">
-            <Image src={coffee} alt="A latte with foam art" fill placeholder="blur" sizes="160px" className="object-cover" />
+            <Image {...slotImage(photos, "heroSmall")} fill sizes="160px" className="object-cover" />
           </div>
           <RotatingBadge className="absolute -right-6 -top-2 h-32 w-32 md:-right-2 md:h-24 md:w-24" />
         </div>

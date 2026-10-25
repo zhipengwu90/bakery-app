@@ -21,7 +21,7 @@ export default async function Home() {
       <Hero settings={settings} hours={hours} />
       <Marquee />
       {featured && <Featured item={featured} />}
-      <DayParts />
+      <DayParts settings={settings} />
       {gallery.length > 0 && <Gallery photos={gallery} instagram={settings.contact.instagram} />}
       <Visit settings={settings} hours={hours} />
     </>

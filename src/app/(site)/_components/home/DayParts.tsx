@@ -1,35 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
-import breakfast from "../../../../../public/foodPhotos/breakfast2.webp";
-import lunch from "../../../../../public/foodPhotos/sandwich.webp";
-import treats from "../../../../../public/foodPhotos/muffins.webp";
+import { slotImage } from "@/lib/content/photos";
+import type { PhotoSlot, SiteSettings } from "@/lib/content/types";
 
-const PARTS = [
-  {
-    time: "Until 11:30",
-    title: "Breakfast",
-    text: "Skillets, breakfast sandwiches and two-egg plates to start the day right.",
-    img: breakfast,
-    href: "/menu#breakfast",
-  },
-  {
-    time: "All day",
-    title: "Lunch",
-    text: "Homemade soup and sandwiches on bread we bake ourselves, with meats roasted in-house.",
-    img: lunch,
-    href: "/menu#sandwiches",
-  },
-  {
-    time: "Anytime",
-    title: "Coffee & treats",
-    text: "Lattes, London fogs and a case full of muffins, scones, cinnamon and poppy seed buns.",
-    img: treats,
-    href: "/menu#coffee-tea",
-  },
-];
+const SLOTS: PhotoSlot[] = ["dayPart1", "dayPart2", "dayPart3"];
 
-export default function DayParts() {
+export default function DayParts({ settings }: { settings: SiteSettings }) {
+  const { dayParts, photos } = settings;
   return (
     <section className="container-page py-20 md:py-14">
       <div className="flex items-end justify-between gap-6 md:flex-col md:items-start">
@@ -45,24 +23,24 @@ export default function DayParts() {
       </div>
 
       <div className="mt-12 grid grid-cols-3 gap-6 lg:grid-cols-1">
-        {PARTS.map((p) => (
+        {dayParts.slice(0, SLOTS.length).map((p, i) => (
           <Link
-            key={p.title}
+            key={i}
             href={p.href}
             className="group relative flex flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-sm ring-1 ring-ink/5 transition hover:-translate-y-1 hover:shadow-xl lg:flex-row md:flex-col"
           >
             <div className="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:w-2/5 md:aspect-[4/3] md:w-full">
               <Image
-                src={p.img}
-                alt={p.title}
+                {...slotImage(photos, SLOTS[i], p.title)}
                 fill
-                placeholder="blur"
                 sizes="(max-width: 767px) 92vw, (max-width: 1023px) 40vw, 360px"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <span className="absolute left-4 top-4 rounded-full bg-cream/95 px-3 py-1 text-xs font-semibold uppercase tracking-wider">
-                {p.time}
-              </span>
+              {p.label && (
+                <span className="absolute left-4 top-4 rounded-full bg-cream/95 px-3 py-1 text-xs font-semibold uppercase tracking-wider">
+                  {p.label}
+                </span>
+              )}
             </div>
             <div className="flex flex-1 flex-col p-7">
               <h3 className="flex items-center justify-between font-display text-3xl">

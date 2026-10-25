@@ -3,10 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { GiCoffeeCup, GiSlicedBread, GiWheat } from "react-icons/gi";
 import { FiArrowRight } from "react-icons/fi";
-import sign from "../../../../public/image/brazenPoppyImage.webp";
-import warm from "../../../../public/image/warm.webp";
-import muffins from "../../../../public/foodPhotos/muffins.webp";
-import cookies from "../../../../public/foodPhotos/cookies2.webp";
+import { slotImage } from "@/lib/content/photos";
 import { getContent } from "@/lib/content/server";
 
 export const revalidate = 300;
@@ -36,7 +33,7 @@ const PILLARS = [
 ];
 
 export default async function AboutPage() {
-  const { about } = await getContent("settings");
+  const { about, photos } = await getContent("settings");
 
   return (
     <>
@@ -47,13 +44,13 @@ export default async function AboutPage() {
           <p className="mt-6 text-xl leading-relaxed text-ink-soft">{about.intro}</p>
         </div>
         <div className="relative aspect-[2/1] overflow-hidden rounded-[2rem] shadow-xl">
-          <Image src={sign} alt="The Brazen Poppy Bakery sign in the shop window" fill priority placeholder="blur" sizes="(max-width: 1023px) 92vw, 540px" className="object-cover" />
+          <Image {...slotImage(photos, "storyHeader")} fill priority sizes="(max-width: 1023px) 92vw, 540px" className="object-cover" />
         </div>
       </section>
 
       <section className="container-page">
         <div className="relative aspect-[21/9] overflow-hidden rounded-[2rem] md:aspect-[4/3]">
-          <Image src={warm} alt="Inside the café: the coffee bar, chalkboard menu and a seasonal display" fill placeholder="blur" sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" />
+          <Image {...slotImage(photos, "storyWide")} fill sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" />
         </div>
       </section>
 
@@ -85,22 +82,14 @@ export default async function AboutPage() {
       </section>
 
       <section className="container-page grid grid-cols-2 gap-6 py-20 md:grid-cols-1 md:py-14">
-        <figure>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem]">
-            <Image src={muffins} alt="A tray of fresh muffins" fill placeholder="blur" sizes="(max-width: 767px) 92vw, 560px" className="object-cover" />
-          </div>
-          <figcaption className="mt-3 text-sm text-ink-muted">
-            Handcrafted pastries, baked in our own kitchen with ingredients from local suppliers.
-          </figcaption>
-        </figure>
-        <figure>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem]">
-            <Image src={cookies} alt="Freshly baked cookies" fill placeholder="blur" sizes="(max-width: 767px) 92vw, 560px" className="object-cover" />
-          </div>
-          <figcaption className="mt-3 text-sm text-ink-muted">
-            Old-fashioned techniques, made to make your taste-buds happy.
-          </figcaption>
-        </figure>
+        {(["storyFigure1", "storyFigure2"] as const).map((slot, i) => (
+          <figure key={slot}>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem]">
+              <Image {...slotImage(photos, slot, about.captions[i])} fill sizes="(max-width: 767px) 92vw, 560px" className="object-cover" />
+            </div>
+            {about.captions[i] && <figcaption className="mt-3 text-sm text-ink-muted">{about.captions[i]}</figcaption>}
+          </figure>
+        ))}
       </section>
 
       <section className="container-page pb-24">

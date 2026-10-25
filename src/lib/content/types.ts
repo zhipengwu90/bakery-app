@@ -41,9 +41,39 @@ export interface HoursData {
   specialNote?: string;
 }
 
+/** A photo uploaded from the dashboard to the `brazen_page` storage bucket. */
+export interface SitePhoto {
+  url: string;
+  path: string;
+}
+
+/** Fixed photo spots on the public pages; each falls back to a built-in photo. */
+export type PhotoSlot =
+  | "heroMain"
+  | "heroSmall"
+  | "dayPart1"
+  | "dayPart2"
+  | "dayPart3"
+  | "storyHeader"
+  | "storyWide"
+  | "storyFigure1"
+  | "storyFigure2";
+
+/** One of the three homepage cards (Breakfast / Lunch / Coffee & treats). */
+export interface DayPart {
+  /** Small tag on the photo, e.g. "Until 11:30". */
+  label: string;
+  title: string;
+  text: string;
+  href: string;
+}
+
 export interface SiteSettings {
   announcement: { enabled: boolean; text: string; link?: string };
   hero: { eyebrow: string; title: string; subtitle: string };
+  dayParts: DayPart[];
+  /** Uploaded replacements for the built-in photos. */
+  photos: Partial<Record<PhotoSlot, SitePhoto>>;
   contact: {
     phone: string;
     email?: string;
@@ -52,7 +82,13 @@ export interface SiteSettings {
     facebook?: string;
     instagram?: string;
   };
-  about: { title: string; intro: string; paragraphs: string[] };
+  about: {
+    title: string;
+    intro: string;
+    paragraphs: string[];
+    /** Captions under the two photos near the bottom of the page. */
+    captions: string[];
+  };
   legalName: string;
 }
 

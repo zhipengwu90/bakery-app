@@ -11,6 +11,27 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     subtitle:
       "Join us for breakfast or lunch — outstanding coffee, bread baked in-house for every sandwich, and pastries straight from the oven.",
   },
+  dayParts: [
+    {
+      label: "Until 11:30",
+      title: "Breakfast",
+      text: "Skillets, breakfast sandwiches and two-egg plates to start the day right.",
+      href: "/menu#breakfast",
+    },
+    {
+      label: "All day",
+      title: "Lunch",
+      text: "Homemade soup and sandwiches on bread we bake ourselves, with meats roasted in-house.",
+      href: "/menu#sandwiches",
+    },
+    {
+      label: "Anytime",
+      title: "Coffee & treats",
+      text: "Lattes, London fogs and a case full of muffins, scones, cinnamon and poppy seed buns.",
+      href: "/menu#coffee-tea",
+    },
+  ],
+  photos: {},
   contact: {
     phone: "250-905-1123",
     email: "",
@@ -27,6 +48,10 @@ export const DEFAULT_SETTINGS: SiteSettings = {
       "At the Brazen Poppy Bakery Café in Parksville, the warm smell of baking will make your mouth water before you're through the door. We kick-start your morning with skillet breakfasts, breakfast sandwiches, warm muffins, scones, cinnamon buns, poppy seed buns and more — plus a fresh cup of coffee, a cappuccino, latte, tea or hot chocolate.",
       "Lunch carries on the fresh theme: homemade soups, and sandwiches on bread baked on site with meats roasted in-house by our butcher/baker. We also offer tacos and burgers — a lunch that's sure to put a smile on your face.",
       "Anytime is coffee or tea time with one of our treats. Most of our soups are gluten-free, and our sandwiches can be made gluten-free too.",
+    ],
+    captions: [
+      "Handcrafted pastries, baked in our own kitchen with ingredients from local suppliers.",
+      "Old-fashioned techniques, made to make your taste-buds happy.",
     ],
   },
   legalName: "The Islander Bakery Corp.",

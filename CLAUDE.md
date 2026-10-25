@@ -23,7 +23,7 @@ Next.js 15 App Router project for **Brazen Poppy Bakery** (Parksville, BC). Type
 
 - `src/app/(site)/` — Public pages sharing the header/footer layout: home (`page.tsx`), `menu/`, `about/`. Shared pieces in `(site)/_components/` (home sections under `_components/home/`).
 - `src/app/admin/` — Staff login page; successful login redirects to `/manager`
-- `src/app/manager/` — Protected "Website manager" dashboard. `_components/Dashboard.tsx` hosts tabbed editors: Menu, Hours, What's new, Photos, Site text
+- `src/app/manager/` — Protected "Website manager" dashboard. `_components/Dashboard.tsx` hosts tabbed editors: Menu, Hours, What's new, Photos, Text & photos
 - `src/app/actions/revalidate.ts` — Server action the dashboard calls after saving so public pages refresh immediately
 - `src/lib/content/` — Content layer: `types.ts` (data shapes), `defaults.ts` (fallback content), `server.ts` (public reads), `hours.ts` / `format.ts` (helpers)
 - `src/app/utils/supabase/` — Supabase clients: `client.ts` (browser), `server.ts` (SSR, cookie-based auth)
@@ -34,7 +34,7 @@ Next.js 15 App Router project for **Brazen Poppy Bakery** (Parksville, BC). Type
 
 - **Database**: Supabase (PostgreSQL). Required env vars: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env`.
 - **Auth**: `/manager` checks `supabase.auth.getUser()` server-side and redirects to `/admin`. (The root `middleware.ts` is not picked up because the app lives in `src/`.)
-- **Editable content** (`site_content` table, one row per key, JSON in `data`): `menu`, `hours`, `settings` (announcement bar, hero text, contact info, About-page story, legal name). Shapes in `src/lib/content/types.ts`. If a row is missing or Supabase errors, `getContent()` falls back to `src/lib/content/defaults.ts`.
+- **Editable content** (`site_content` table, one row per key, JSON in `data`): `menu`, `hours`, `settings` (announcement bar, hero text, homepage menu cards, contact info, About-page story and captions, legal name, and `photos`: uploaded replacements for the fixed page photos, stored in bucket `brazen_page` as `site_<slot>_<timestamp>`; slots without one use the built-in images in `src/lib/content/photos.ts`). Shapes in `src/lib/content/types.ts`. If a row is missing or Supabase errors, `getContent()` falls back to `src/lib/content/defaults.ts`.
 - **What's new** (homepage feature): `brazen_page` row `id=1` / `type="newItem"`; `is_displayed` toggles it. Images in storage bucket `brazen_page`.
 - **Food gallery**: `brazen_page` rows with `type="foodImg"`, ordered by `img_display_order` descending (unique). Images in storage bucket `foodPhoto`.
 - **Caching**: public pages are statically rendered with `revalidate = 300`; dashboard saves call `revalidateSite()` for instant updates.
