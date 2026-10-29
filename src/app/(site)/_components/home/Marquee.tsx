@@ -15,7 +15,8 @@ export default function Marquee() {
   // Two copies side by side; the track slides by -50% for a seamless loop.
   const track = [...ITEMS, ...ITEMS];
   return (
-    <div className="overflow-hidden bg-ink py-5 text-cream" aria-label={ITEMS.join(", ")}>
+    <div className="overflow-hidden bg-ink py-5 text-cream">
+      <p className="sr-only">{ITEMS.join(", ")}</p>
       <div className="flex w-max animate-marquee items-center hover:[animation-play-state:paused]" aria-hidden="true">
         {track.map((item, i) => (
           <span key={i} className="flex items-center whitespace-nowrap font-display text-2xl italic md:text-xl">

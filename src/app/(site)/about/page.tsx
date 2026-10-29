@@ -96,7 +96,7 @@ export default async function AboutPage() {
       <section className="container-page pb-24">
         <div className="rounded-[2rem] bg-poppy px-10 py-14 text-center text-white md:px-6">
           <h2 className="font-display text-5xl md:text-4xl">Come say hello.</h2>
-          <p className="mx-auto mt-4 max-w-lg text-white/85">
+          <p className="mx-auto mt-4 max-w-lg text-white">
             Find us in the Shelly Square building on the Island Highway in Parksville.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
