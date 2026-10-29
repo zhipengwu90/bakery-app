@@ -34,12 +34,15 @@ export default function Hero({ settings, hours }: { settings: SiteSettings; hour
 
       <div className="container-page relative grid grid-cols-12 items-center gap-12 pb-24 pt-12 lg:grid-cols-1 lg:gap-16 lg:pb-20 lg:pt-6">
         <div className="col-span-7 animate-fade-up lg:col-span-1">
-          <p className="eyebrow flex items-center gap-2">
-            <PoppyMark className="h-4 w-4 text-poppy" />
-            {hero.eyebrow}
-          </p>
-          <h1 className="mt-6 font-display text-[5.25rem] font-medium leading-[0.95] tracking-tight xl:text-7xl md:text-[3.25rem]">
-            <Emphasis text={hero.title} />
+          {/* The eyebrow is part of the H1 so search engines see the town and "bakery" in the headline. */}
+          <h1>
+            <span className="eyebrow flex items-center gap-2 font-sans leading-normal">
+              <PoppyMark className="h-4 w-4 text-poppy" />
+              {hero.eyebrow}
+            </span>
+            <span className="mt-6 block font-display text-[5.25rem] font-medium leading-[0.95] tracking-tight xl:text-7xl md:text-[3.25rem]">
+              <Emphasis text={hero.title} />
+            </span>
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-soft md:text-base">{hero.subtitle}</p>
 

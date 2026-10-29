@@ -17,8 +17,8 @@ const sans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL("https://brazenpoppy.ca"),
   title: {
-    default: "Brazen Poppy Bakery — Fresh Baked Goods & Coffee in Parksville, BC",
-    template: "%s · Brazen Poppy Bakery",
+    default: "Brazen Poppy Bakery Restaurant — Bakery & Café in Parksville, BC",
+    template: "%s · Brazen Poppy Bakery Restaurant",
   },
   description:
     "Bakery café in Parksville, BC offering homemade sandwiches on fresh-baked bread, homemade soup, signature poppy seed rolls and great coffee. Breakfast and lunch daily.",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Brazen Poppy Bakery — Fresh Baked Goods & Coffee in Parksville, BC",
+    title: "Brazen Poppy Bakery Restaurant — Bakery & Café in Parksville, BC",
     description:
       "Bakery café in Parksville, BC offering homemade sandwiches on fresh-baked bread, homemade soup, signature poppy seed rolls and great coffee.",
     url: "https://brazenpoppy.ca",

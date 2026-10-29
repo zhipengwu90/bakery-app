@@ -6,7 +6,7 @@ import type { HoursData, MenuData, SiteSettings } from "./types";
 export const DEFAULT_SETTINGS: SiteSettings = {
   announcement: { enabled: false, text: "", link: "" },
   hero: {
-    eyebrow: "Est. 2018 · Parksville, BC",
+    eyebrow: "Bakery & café · Parksville, BC",
     title: "Fresh baked, *every morning.*",
     subtitle:
       "Join us for breakfast or lunch — outstanding coffee, bread baked in-house for every sandwich, and pastries straight from the oven.",

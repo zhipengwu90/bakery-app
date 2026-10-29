@@ -7,6 +7,8 @@ import type { GalleryPhoto } from "@/lib/content/types";
 
 const INITIAL = 9;
 
+const photoAlt = (n: number) => `Fresh from the kitchen at Brazen Poppy Bakery, Parksville BC (photo ${n})`;
+
 export default function Gallery({ photos, instagram }: { photos: GalleryPhoto[]; instagram?: string }) {
   const [showAll, setShowAll] = useState(false);
   const [index, setIndex] = useState<number | null>(null);
@@ -74,7 +76,7 @@ export default function Gallery({ photos, instagram }: { photos: GalleryPhoto[];
             >
               <Image
                 src={photo.thumb_url ?? photo.img_url}
-                alt=""
+                alt={photoAlt(i + 1)}
                 fill
                 sizes={i === 0 ? "(max-width: 767px) 92vw, 560px" : "(max-width: 767px) 46vw, 280px"}
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -109,7 +111,7 @@ export default function Gallery({ photos, instagram }: { photos: GalleryPhoto[];
           }}
         >
           <div className="relative h-[82vh] w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            <Image src={photos[index].img_url} alt="" fill sizes="90vw" className="object-contain" priority />
+            <Image src={photos[index].img_url} alt={photoAlt(index + 1)} fill sizes="90vw" className="object-contain" priority />
           </div>
 
           <button
