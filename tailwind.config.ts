@@ -14,8 +14,9 @@ module.exports = {
         light: "#f5f5f5",
         // Brand palette, taken from the shop sign: poppy red, leaf green on black.
         cream: { DEFAULT: "#F8F2E9", deep: "#EFE4D3" },
-        ink: { DEFAULT: "#1E1916", soft: "#4A403A", muted: "#7A6E66" },
-        poppy: { DEFAULT: "#C8333A", dark: "#A3262D", light: "#F5DCD6" },
+        ink: { DEFAULT: "#1E1916", soft: "#4A403A", muted: "#6F635C" },
+        // `deep` is for small red text: plain poppy is too light to read on cream.
+        poppy: { DEFAULT: "#C8333A", deep: "#B82E35", dark: "#A3262D", light: "#F5DCD6" },
         leaf: { DEFAULT: "#4F8A34", dark: "#3A6826", light: "#E1ECD6" },
         crust: "#B9773E",
       },

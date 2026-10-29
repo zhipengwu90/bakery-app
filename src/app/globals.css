@@ -21,7 +21,7 @@ body {
   }
 
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-poppy;
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-poppy-deep;
   }
 
   .btn {

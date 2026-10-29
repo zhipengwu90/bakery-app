@@ -28,7 +28,7 @@ export default function HoursList({ hours }: { hours: HoursData }) {
               )}
             </span>
             <span className="text-right">
-              <span className={`tabular-nums ${d.open ? "" : "text-poppy"}`}>{formatRange(d)}</span>
+              <span className={`tabular-nums ${d.open ? "" : "text-poppy-deep"}`}>{formatRange(d)}</span>
               {d.note && <span className="block text-xs font-normal italic text-ink-muted">{d.note}</span>}
             </span>
           </li>
