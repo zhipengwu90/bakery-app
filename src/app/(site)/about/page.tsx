@@ -9,7 +9,7 @@ import { getContent } from "@/lib/content/server";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Our Story",
+  title: { absolute: "Our Story | Brazen Poppy Bakery Restaurant, Parksville" },
   description:
     "Brazen Poppy is a bakery café in Shelly Square, Parksville. Our bakers start early every day so the bread, soups and pastries are fresh when you arrive.",
   alternates: { canonical: "/about" },

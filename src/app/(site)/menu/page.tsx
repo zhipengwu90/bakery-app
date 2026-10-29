@@ -9,7 +9,7 @@ import MenuNav from "./MenuNav";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Menu",
+  title: { absolute: "Menu | Brazen Poppy Bakery Restaurant, Parksville BC" },
   description:
     "Breakfast skillets, sandwiches on bread baked in-house, homemade soups, salads, coffee and feature drinks at Brazen Poppy Bakery in Parksville, BC.",
   alternates: { canonical: "/menu" },
