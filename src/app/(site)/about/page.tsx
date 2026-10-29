@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Our Story",
   description:
     "Brazen Poppy is a bakery café in Shelly Square, Parksville. Our bakers start early every day so the bread, soups and pastries are fresh when you arrive.",
+  alternates: { canonical: "/about" },
 };
 
 const PILLARS = [

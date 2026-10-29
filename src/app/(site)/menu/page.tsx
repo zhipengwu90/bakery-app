@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "Menu",
   description:
     "Breakfast skillets, sandwiches on bread baked in-house, homemade soups, salads, coffee and feature drinks at Brazen Poppy Bakery in Parksville, BC.",
+  alternates: { canonical: "/menu" },
 };
 
 function Section({ section }: { section: MenuSection }) {

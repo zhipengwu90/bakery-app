@@ -13,7 +13,9 @@ function bakeryJsonLd(settings: SiteSettings, hours: HoursData) {
   return {
     "@context": "https://schema.org",
     "@type": "Bakery",
-    name: "Brazen Poppy Bakery",
+    // Matches the Google Business Profile name.
+    name: "Brazen Poppy Bakery Restaurant",
+    alternateName: "Brazen Poppy Bakery",
     url: "https://brazenpoppy.ca",
     telephone: contact.phone,
     servesCuisine: ["Bakery", "Café", "Breakfast", "Sandwiches"],

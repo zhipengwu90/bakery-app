@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getContent, getFeatured, getGallery } from "@/lib/content/server";
 import DayParts from "./_components/home/DayParts";
 import Featured from "./_components/home/Featured";
@@ -7,6 +8,10 @@ import Marquee from "./_components/home/Marquee";
 import Visit from "./_components/home/Visit";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const [settings, hours, featured, gallery] = await Promise.all([
